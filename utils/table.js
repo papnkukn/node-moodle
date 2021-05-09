@@ -7,9 +7,11 @@ const json = fs.readFileSync(file, "utf8");
 const definition = JSON.parse(json);
 
 //Find command line arguments
-let update = false;
+let updateStandalone = false;
+let updateReadme = false;
 for (let arg of process.argv) {
-  update |= (arg == "--update");
+  updateStandalone |= (arg == "--update-standalone");
+  updateReadme |= (arg == "--update-readme");
 }
 
 //Table header
@@ -28,7 +30,7 @@ for (var i = 0; i < definition.items.length; i++) {
 }
 
 //Update README.md or just print to the console
-if (update) {
+if (updateReadme) {
   const readme = path.resolve(__dirname, "..", "README.md");
   const md = fs.readFileSync(readme, "utf8");
   let index = md.indexOf(header);
@@ -60,6 +62,12 @@ if (update) {
   let updated = lines.join(os.EOL);
   fs.writeFileSync(readme, updated);
   
+  console.log("Done!");
+}
+else if (updateStandalone) {
+  const mdfile = path.resolve(__dirname, "..", "wiki", "functions.md");
+  let updated = list.join(os.EOL);
+  fs.writeFileSync(mdfile, updated);
   console.log("Done!");
 }
 else {
