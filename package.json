@@ -1,0 +1,20 @@
+{
+  "name": "node-moodle",
+  "version": "1.0.0",
+  "description": "Moodle Web Service API client",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/*.js",
+    "table": "node utils/table.js --update",
+    "extract": "node utils/extract.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "jsdom": "^16.5.3",
+    "mocha": "^8.4.0"
+  },
+  "author": "Papn Kukn",
+  "license": "MIT"
+}
