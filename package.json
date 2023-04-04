@@ -2,7 +2,7 @@
   "name": "node-moodle",
   "version": "1.0.0",
   "description": "Moodle Web Service API client",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "mocha test/*.js",
     "table": "node utils/table.js --update-standalone",
