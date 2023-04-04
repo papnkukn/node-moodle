@@ -1,0 +1,243 @@
+export interface IMoodleWSMod {
+  assign: {
+    copyPreviousAttempt: (data?: any) => Promise<any>;
+    getAssignments: (data?: any) => Promise<any>;
+    getGrades: (data?: any) => Promise<any>;
+    getParticipant: (data?: any) => Promise<any>;
+    getSubmissionStatus: (data?: any) => Promise<any>;
+    getSubmissions: (data?: any) => Promise<any>;
+    getUserFlags: (data?: any) => Promise<any>;
+    getUserMappings: (data?: any) => Promise<any>;
+    listParticipants: (data?: any) => Promise<any>;
+    lockSubmissions: (data?: any) => Promise<any>;
+    revealIdentities: (data?: any) => Promise<any>;
+    revertSubmissionsToDraft: (data?: any) => Promise<any>;
+    saveGrade: (data?: any) => Promise<any>;
+    saveGrades: (data?: any) => Promise<any>;
+    saveSubmission: (data?: any) => Promise<any>;
+    saveUserExtensions: (data?: any) => Promise<any>;
+    setUserFlags: (data?: any) => Promise<any>;
+    submitForGrading: (data?: any) => Promise<any>;
+    submitGradingForm: (data?: any) => Promise<any>;
+    unlockSubmissions: (data?: any) => Promise<any>;
+    viewAssign: (data?: any) => Promise<any>;
+    viewGradingTable: (data?: any) => Promise<any>;
+    viewSubmissionStatus: (data?: any) => Promise<any>;
+  };
+  book: {
+    getBooksByCourses: (data?: any) => Promise<any>;
+    viewBook: (data?: any) => Promise<any>;
+  };
+  chat: {
+    getChatLatestMessages: (data?: any) => Promise<any>;
+    getChatUsers: (data?: any) => Promise<any>;
+    getChatsByCourses: (data?: any) => Promise<any>;
+    getSessionMessages: (data?: any) => Promise<any>;
+    getSessions: (data?: any) => Promise<any>;
+    loginUser: (data?: any) => Promise<any>;
+    sendChatMessage: (data?: any) => Promise<any>;
+    viewChat: (data?: any) => Promise<any>;
+  };
+  choice: {
+    deleteChoiceResponses: (data?: any) => Promise<any>;
+    getChoiceOptions: (data?: any) => Promise<any>;
+    getChoiceResults: (data?: any) => Promise<any>;
+    getChoicesByCourses: (data?: any) => Promise<any>;
+    submitChoiceResponse: (data?: any) => Promise<any>;
+    viewChoice: (data?: any) => Promise<any>;
+  };
+  data: {
+    addEntry: (data?: any) => Promise<any>;
+    approveEntry: (data?: any) => Promise<any>;
+    deleteEntry: (data?: any) => Promise<any>;
+    getDataAccessInformation: (data?: any) => Promise<any>;
+    getDatabasesByCourses: (data?: any) => Promise<any>;
+    getEntries: (data?: any) => Promise<any>;
+    getEntry: (data?: any) => Promise<any>;
+    getFields: (data?: any) => Promise<any>;
+    searchEntries: (data?: any) => Promise<any>;
+    updateEntry: (data?: any) => Promise<any>;
+    viewDatabase: (data?: any) => Promise<any>;
+  };
+  feedback: {
+    getAnalysis: (data?: any) => Promise<any>;
+    getCurrentCompletedTmp: (data?: any) => Promise<any>;
+    getFeedbackAccessInformation: (data?: any) => Promise<any>;
+    getFeedbacksByCourses: (data?: any) => Promise<any>;
+    getFinishedResponses: (data?: any) => Promise<any>;
+    getItems: (data?: any) => Promise<any>;
+    getLastCompleted: (data?: any) => Promise<any>;
+    getNonRespondents: (data?: any) => Promise<any>;
+    getPageItems: (data?: any) => Promise<any>;
+    getResponsesAnalysis: (data?: any) => Promise<any>;
+    getUnfinishedResponses: (data?: any) => Promise<any>;
+    launchFeedback: (data?: any) => Promise<any>;
+    processPage: (data?: any) => Promise<any>;
+    viewFeedback: (data?: any) => Promise<any>;
+  };
+  folder: {
+    getFoldersByCourses: (data?: any) => Promise<any>;
+    viewFolder: (data?: any) => Promise<any>;
+  };
+  forum: {
+    addDiscussion: (data?: any) => Promise<any>;
+    addDiscussionPost: (data?: any) => Promise<any>;
+    canAddDiscussion: (data?: any) => Promise<any>;
+    deletePost: (data?: any) => Promise<any>;
+    getDiscussionPost: (data?: any) => Promise<any>;
+    getDiscussionPosts: (data?: any) => Promise<any>;
+    getDiscussionPostsByUserid: (data?: any) => Promise<any>;
+    getForumAccessInformation: (data?: any) => Promise<any>;
+    getForumDiscussionPosts: (data?: any) => Promise<any>;
+    getForumDiscussions: (data?: any) => Promise<any>;
+    getForumDiscussionsPaginated: (data?: any) => Promise<any>;
+    getForumsByCourses: (data?: any) => Promise<any>;
+    prepareDraftAreaForPost: (data?: any) => Promise<any>;
+    setLockState: (data?: any) => Promise<any>;
+    setPinState: (data?: any) => Promise<any>;
+    setSubscriptionState: (data?: any) => Promise<any>;
+    toggleFavouriteState: (data?: any) => Promise<any>;
+    updateDiscussionPost: (data?: any) => Promise<any>;
+    viewForum: (data?: any) => Promise<any>;
+    viewForumDiscussion: (data?: any) => Promise<any>;
+  };
+  glossary: {
+    addEntry: (data?: any) => Promise<any>;
+    getAuthors: (data?: any) => Promise<any>;
+    getCategories: (data?: any) => Promise<any>;
+    getEntriesByAuthor: (data?: any) => Promise<any>;
+    getEntriesByAuthorId: (data?: any) => Promise<any>;
+    getEntriesByCategory: (data?: any) => Promise<any>;
+    getEntriesByDate: (data?: any) => Promise<any>;
+    getEntriesByLetter: (data?: any) => Promise<any>;
+    getEntriesBySearch: (data?: any) => Promise<any>;
+    getEntriesByTerm: (data?: any) => Promise<any>;
+    getEntriesToApprove: (data?: any) => Promise<any>;
+    getEntryById: (data?: any) => Promise<any>;
+    getGlossariesByCourses: (data?: any) => Promise<any>;
+    viewEntry: (data?: any) => Promise<any>;
+    viewGlossary: (data?: any) => Promise<any>;
+  };
+  imscp: {
+    getImscpsByCourses: (data?: any) => Promise<any>;
+    viewImscp: (data?: any) => Promise<any>;
+  };
+  label: {
+    getLabelsByCourses: (data?: any) => Promise<any>;
+  };
+  lesson: {
+    finishAttempt: (data?: any) => Promise<any>;
+    getAttemptsOverview: (data?: any) => Promise<any>;
+    getContentPagesViewed: (data?: any) => Promise<any>;
+    getLesson: (data?: any) => Promise<any>;
+    getLessonAccessInformation: (data?: any) => Promise<any>;
+    getLessonsByCourses: (data?: any) => Promise<any>;
+    getPageData: (data?: any) => Promise<any>;
+    getPages: (data?: any) => Promise<any>;
+    getPagesPossibleJumps: (data?: any) => Promise<any>;
+    getQuestionsAttempts: (data?: any) => Promise<any>;
+    getUserAttempt: (data?: any) => Promise<any>;
+    getUserAttemptGrade: (data?: any) => Promise<any>;
+    getUserGrade: (data?: any) => Promise<any>;
+    getUserTimers: (data?: any) => Promise<any>;
+    launchAttempt: (data?: any) => Promise<any>;
+    processPage: (data?: any) => Promise<any>;
+    viewLesson: (data?: any) => Promise<any>;
+  };
+  lti: {
+    createToolProxy: (data?: any) => Promise<any>;
+    createToolType: (data?: any) => Promise<any>;
+    deleteToolProxy: (data?: any) => Promise<any>;
+    deleteToolType: (data?: any) => Promise<any>;
+    getLtisByCourses: (data?: any) => Promise<any>;
+    getToolLaunchData: (data?: any) => Promise<any>;
+    getToolProxies: (data?: any) => Promise<any>;
+    getToolProxyRegistrationRequest: (data?: any) => Promise<any>;
+    getToolTypes: (data?: any) => Promise<any>;
+    isCartridge: (data?: any) => Promise<any>;
+    updateToolType: (data?: any) => Promise<any>;
+    viewLti: (data?: any) => Promise<any>;
+  };
+  page: {
+    getPagesByCourses: (data?: any) => Promise<any>;
+    viewPage: (data?: any) => Promise<any>;
+  };
+  quiz: {
+    getAttemptAccessInformation: (data?: any) => Promise<any>;
+    getAttemptData: (data?: any) => Promise<any>;
+    getAttemptReview: (data?: any) => Promise<any>;
+    getAttemptSummary: (data?: any) => Promise<any>;
+    getCombinedReviewOptions: (data?: any) => Promise<any>;
+    getQuizAccessInformation: (data?: any) => Promise<any>;
+    getQuizFeedbackForGrade: (data?: any) => Promise<any>;
+    getQuizRequiredQtypes: (data?: any) => Promise<any>;
+    getQuizzesByCourses: (data?: any) => Promise<any>;
+    getUserAttempts: (data?: any) => Promise<any>;
+    getUserBestGrade: (data?: any) => Promise<any>;
+    processAttempt: (data?: any) => Promise<any>;
+    saveAttempt: (data?: any) => Promise<any>;
+    startAttempt: (data?: any) => Promise<any>;
+    viewAttempt: (data?: any) => Promise<any>;
+    viewAttemptReview: (data?: any) => Promise<any>;
+    viewAttemptSummary: (data?: any) => Promise<any>;
+    viewQuiz: (data?: any) => Promise<any>;
+  };
+  resource: {
+    getResourcesByCourses: (data?: any) => Promise<any>;
+    viewResource: (data?: any) => Promise<any>;
+  };
+  scorm: {
+    getScormAccessInformation: (data?: any) => Promise<any>;
+    getScormAttemptCount: (data?: any) => Promise<any>;
+    getScormScoTracks: (data?: any) => Promise<any>;
+    getScormScoes: (data?: any) => Promise<any>;
+    getScormUserData: (data?: any) => Promise<any>;
+    getScormsByCourses: (data?: any) => Promise<any>;
+    insertScormTracks: (data?: any) => Promise<any>;
+    launchSco: (data?: any) => Promise<any>;
+    viewScorm: (data?: any) => Promise<any>;
+  };
+  survey: {
+    getQuestions: (data?: any) => Promise<any>;
+    getSurveysByCourses: (data?: any) => Promise<any>;
+    submitAnswers: (data?: any) => Promise<any>;
+    viewSurvey: (data?: any) => Promise<any>;
+  };
+  url: {
+    getUrlsByCourses: (data?: any) => Promise<any>;
+    viewUrl: (data?: any) => Promise<any>;
+  };
+  wiki: {
+    editPage: (data?: any) => Promise<any>;
+    getPageContents: (data?: any) => Promise<any>;
+    getPageForEditing: (data?: any) => Promise<any>;
+    getSubwikiFiles: (data?: any) => Promise<any>;
+    getSubwikiPages: (data?: any) => Promise<any>;
+    getSubwikis: (data?: any) => Promise<any>;
+    getWikisByCourses: (data?: any) => Promise<any>;
+    newPage: (data?: any) => Promise<any>;
+    viewPage: (data?: any) => Promise<any>;
+    viewWiki: (data?: any) => Promise<any>;
+  };
+  workshop: {
+    addSubmission: (data?: any) => Promise<any>;
+    deleteSubmission: (data?: any) => Promise<any>;
+    evaluateAssessment: (data?: any) => Promise<any>;
+    evaluateSubmission: (data?: any) => Promise<any>;
+    getAssessment: (data?: any) => Promise<any>;
+    getAssessmentFormDefinition: (data?: any) => Promise<any>;
+    getGrades: (data?: any) => Promise<any>;
+    getGradesReport: (data?: any) => Promise<any>;
+    getReviewerAssessments: (data?: any) => Promise<any>;
+    getSubmission: (data?: any) => Promise<any>;
+    getSubmissionAssessments: (data?: any) => Promise<any>;
+    getSubmissions: (data?: any) => Promise<any>;
+    getUserPlan: (data?: any) => Promise<any>;
+    getWorkshopAccessInformation: (data?: any) => Promise<any>;
+    getWorkshopsByCourses: (data?: any) => Promise<any>;
+    updateAssessment: (data?: any) => Promise<any>;
+    updateSubmission: (data?: any) => Promise<any>;
+    viewSubmission: (data?: any) => Promise<any>;
+    viewWorkshop: (data?: any) => Promise<any>;
+  };
+}
