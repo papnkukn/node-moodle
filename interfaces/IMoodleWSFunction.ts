@@ -1,4 +1,4 @@
-export interface IMoodleWSFunction {
+export default interface IMoodleWSFn {
   area: string;
   name: string;
   minVersion: string;

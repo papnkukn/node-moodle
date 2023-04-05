@@ -1,13 +1,15 @@
-export interface IMoodleWSEnrol {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSEnrol {
   guest: {
-    getInstanceInfo: (data?: any) => Promise<any>;
+    getInstanceInfo: (payload: IMoodleWSPayload) => Promise<any>;
   };
   manual: {
-    enrolUsers: (data?: any) => Promise<any>;
-    unenrolUsers: (data?: any) => Promise<any>;
+    enrolUsers: (payload: IMoodleWSPayload) => Promise<any>;
+    unenrolUsers: (payload: IMoodleWSPayload) => Promise<any>;
   };
   self: {
-    enrolUser: (data?: any) => Promise<any>;
-    getInstanceInfo: (data?: any) => Promise<any>;
+    enrolUser: (payload: IMoodleWSPayload) => Promise<any>;
+    getInstanceInfo: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }

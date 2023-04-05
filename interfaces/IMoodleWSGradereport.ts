@@ -1,11 +1,13 @@
-export interface IMoodleWSGradereport {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSGradereport {
   overview: {
-    getCourseGrades: (data?: any) => Promise<any>;
-    viewGradeReport: (data?: any) => Promise<any>;
+    getCourseGrades: (payload: IMoodleWSPayload) => Promise<any>;
+    viewGradeReport: (payload: IMoodleWSPayload) => Promise<any>;
   };
   user: {
-    getGradeItems: (data?: any) => Promise<any>;
-    getGradesTable: (data?: any) => Promise<any>;
-    viewGradeReport: (data?: any) => Promise<any>;
+    getGradeItems: (payload: IMoodleWSPayload) => Promise<any>;
+    getGradesTable: (payload: IMoodleWSPayload) => Promise<any>;
+    viewGradeReport: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }

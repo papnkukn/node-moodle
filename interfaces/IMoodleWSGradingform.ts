@@ -1,10 +1,12 @@
-export interface IMoodleWSGradingform {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSGradingform {
   guide: {
-    graderGradingpanelFetch: (data?: any) => Promise<any>;
-    graderGradingpanelStore: (data?: any) => Promise<any>;
+    graderGradingpanelFetch: (payload: IMoodleWSPayload) => Promise<any>;
+    graderGradingpanelStore: (payload: IMoodleWSPayload) => Promise<any>;
   };
   rubric: {
-    graderGradingpanelFetch: (data?: any) => Promise<any>;
-    graderGradingpanelStore: (data?: any) => Promise<any>;
+    graderGradingpanelFetch: (payload: IMoodleWSPayload) => Promise<any>;
+    graderGradingpanelStore: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }

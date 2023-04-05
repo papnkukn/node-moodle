@@ -1,6 +1,8 @@
-export interface IMoodleWSAuth {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSAuth {
   email: {
-    getSignupSettings: (data?: any) => Promise<any>;
-    signupUser: (data?: any) => Promise<any>;
+    getSignupSettings: (payload: IMoodleWSPayload) => Promise<any>;
+    signupUser: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }

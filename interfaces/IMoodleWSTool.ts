@@ -1,45 +1,57 @@
-export interface IMoodleWSTool {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSTool {
   analytics: {
-    potentialContexts: (data?: any) => Promise<any>;
+    potentialContexts: (payload: IMoodleWSPayload) => Promise<any>;
   };
   lp: {
-    dataForCompetenciesManagePage: (data?: any) => Promise<any>;
-    dataForCompetencyFrameworksManagePage: (data?: any) => Promise<any>;
-    dataForCompetencySummary: (data?: any) => Promise<any>;
-    dataForCourseCompetenciesPage: (data?: any) => Promise<any>;
-    dataForPlanPage: (data?: any) => Promise<any>;
-    dataForPlansPage: (data?: any) => Promise<any>;
-    dataForRelatedCompetenciesSection: (data?: any) => Promise<any>;
-    dataForTemplateCompetenciesPage: (data?: any) => Promise<any>;
-    dataForTemplatesManagePage: (data?: any) => Promise<any>;
-    dataForUserCompetencySummary: (data?: any) => Promise<any>;
-    dataForUserCompetencySummaryInCourse: (data?: any) => Promise<any>;
-    dataForUserCompetencySummaryInPlan: (data?: any) => Promise<any>;
-    dataForUserEvidenceListPage: (data?: any) => Promise<any>;
-    dataForUserEvidencePage: (data?: any) => Promise<any>;
-    listCoursesUsingCompetency: (data?: any) => Promise<any>;
-    searchCohorts: (data?: any) => Promise<any>;
-    searchUsers: (data?: any) => Promise<any>;
+    dataForCompetenciesManagePage: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForCompetencyFrameworksManagePage: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
+    dataForCompetencySummary: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForCourseCompetenciesPage: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForPlanPage: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForPlansPage: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForRelatedCompetenciesSection: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
+    dataForTemplateCompetenciesPage: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
+    dataForTemplatesManagePage: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForUserCompetencySummary: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForUserCompetencySummaryInCourse: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
+    dataForUserCompetencySummaryInPlan: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
+    dataForUserEvidenceListPage: (payload: IMoodleWSPayload) => Promise<any>;
+    dataForUserEvidencePage: (payload: IMoodleWSPayload) => Promise<any>;
+    listCoursesUsingCompetency: (payload: IMoodleWSPayload) => Promise<any>;
+    searchCohorts: (payload: IMoodleWSPayload) => Promise<any>;
+    searchUsers: (payload: IMoodleWSPayload) => Promise<any>;
   };
   mobile: {
-    callExternalFunctions: (data?: any) => Promise<any>;
-    getAutologinKey: (data?: any) => Promise<any>;
-    getConfig: (data?: any) => Promise<any>;
-    getContent: (data?: any) => Promise<any>;
-    getPluginsSupportingMobile: (data?: any) => Promise<any>;
-    getPublicConfig: (data?: any) => Promise<any>;
+    callExternalFunctions: (payload: IMoodleWSPayload) => Promise<any>;
+    getAutologinKey: (payload: IMoodleWSPayload) => Promise<any>;
+    getConfig: (payload: IMoodleWSPayload) => Promise<any>;
+    getContent: (payload: IMoodleWSPayload) => Promise<any>;
+    getPluginsSupportingMobile: (payload: IMoodleWSPayload) => Promise<any>;
+    getPublicConfig: (payload: IMoodleWSPayload) => Promise<any>;
   };
   templatelibrary: {
-    listTemplates: (data?: any) => Promise<any>;
-    loadCanonicalTemplate: (data?: any) => Promise<any>;
+    listTemplates: (payload: IMoodleWSPayload) => Promise<any>;
+    loadCanonicalTemplate: (payload: IMoodleWSPayload) => Promise<any>;
   };
   usertours: {
-    completeTour: (data?: any) => Promise<any>;
-    fetchAndStartTour: (data?: any) => Promise<any>;
-    resetTour: (data?: any) => Promise<any>;
-    stepShown: (data?: any) => Promise<any>;
+    completeTour: (payload: IMoodleWSPayload) => Promise<any>;
+    fetchAndStartTour: (payload: IMoodleWSPayload) => Promise<any>;
+    resetTour: (payload: IMoodleWSPayload) => Promise<any>;
+    stepShown: (payload: IMoodleWSPayload) => Promise<any>;
   };
   xmldb: {
-    invokeMoveAction: (data?: any) => Promise<any>;
+    invokeMoveAction: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }

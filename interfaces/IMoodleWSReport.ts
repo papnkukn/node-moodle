@@ -1,10 +1,12 @@
-export interface IMoodleWSReport {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSReport {
   competency: {
-    dataForReport: (data?: any) => Promise<any>;
+    dataForReport: (payload: IMoodleWSPayload) => Promise<any>;
   };
   insights: {
-    actionExecuted: (data?: any) => Promise<any>;
-    setFixedPrediction: (data?: any) => Promise<any>;
-    setNotusefulPrediction: (data?: any) => Promise<any>;
+    actionExecuted: (payload: IMoodleWSPayload) => Promise<any>;
+    setFixedPrediction: (payload: IMoodleWSPayload) => Promise<any>;
+    setNotusefulPrediction: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }

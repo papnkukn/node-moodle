@@ -1,6 +1,6 @@
-import { IMoodleWSFunction } from './IMoodleWSFunction';
+import IMoodleWSFn from './IMoodleWSFunction';
 
-export interface IMoodleWSDefinition {
+export default interface IMoodleWSDefinition {
   created: string;
-  items: IMoodleWSFunction[];
+  items: IMoodleWSFn[];
 }

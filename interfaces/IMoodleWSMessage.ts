@@ -1,12 +1,18 @@
-export interface IMoodleWSMessage {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSMessage {
   airnotifier: {
-    areNotificationPreferencesConfigured: (data?: any) => Promise<any>;
-    enableDevice: (data?: any) => Promise<any>;
-    getUserDevices: (data?: any) => Promise<any>;
-    isSystemConfigured: (data?: any) => Promise<any>;
+    areNotificationPreferencesConfigured: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
+    enableDevice: (payload: IMoodleWSPayload) => Promise<any>;
+    getUserDevices: (payload: IMoodleWSPayload) => Promise<any>;
+    isSystemConfigured: (payload: IMoodleWSPayload) => Promise<any>;
   };
   popup: {
-    getPopupNotifications: (data?: any) => Promise<any>;
-    getUnreadPopupNotificationCount: (data?: any) => Promise<any>;
+    getPopupNotifications: (payload: IMoodleWSPayload) => Promise<any>;
+    getUnreadPopupNotificationCount: (
+      payload: IMoodleWSPayload
+    ) => Promise<any>;
   };
 }

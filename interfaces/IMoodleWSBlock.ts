@@ -1,8 +1,10 @@
-export interface IMoodleWSBlock {
+import IMoodleWSPayload from './IMoodleWSPayload';
+
+export default interface IMoodleWSBlock {
   recentlyaccesseditems: {
-    getRecentItems: (data?: any) => Promise<any>;
+    getRecentItems: (payload: IMoodleWSPayload) => Promise<any>;
   };
   starredcourses: {
-    getStarredCourses: (data?: any) => Promise<any>;
+    getStarredCourses: (payload: IMoodleWSPayload) => Promise<any>;
   };
 }
