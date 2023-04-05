@@ -1,6 +1,6 @@
-# Moodle API client for Node.js
+# TypeScript Moodle API client for Node.js
 
-A simple and developer friendly JavaScript module to perform Web Service (API) calls to the Moodle site.
+A simple and developer friendly TypeScript module to perform Web Service (API) calls to the Moodle site.
 
 ## Getting started
 
