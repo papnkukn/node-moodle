@@ -2,6 +2,7 @@
 .docs
 api/functions.html
 package-lock.json
+.prettierrc
 
 # Logs
 logs
