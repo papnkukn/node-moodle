@@ -4,21 +4,26 @@ import { EventEmitter } from 'events';
 import { URLSearchParams } from 'url';
 import fetch, { RequestInit } from 'node-fetch';
 
-import { IMoodleErrorOptions } from './interfaces/IMoodleErrorOptions';
-import { IMoodleClientOptions } from './interfaces/IMoodleClientOptions';
-import { IMoodleWSDefinition } from './interfaces/IMoodleWSDefinition';
-import { IMoodleWSFunction } from './interfaces/IMoodleWSFunction';
+import IMoodleErrorOptions from './interfaces/IMoodleErrorOptions';
+import IMoodleClientOptions from './interfaces/IMoodleClientOptions';
+import IMoodleWSDefinition from './interfaces/IMoodleWSDefinition';
+import IMoodleWSFn from './interfaces/IMoodleWSFunction';
 
 //Load package info
 import pkg from './package.json';
-import { IMoodleWSAPI } from './interfaces/IMoodleWSAPI';
+import IMoodleWSAPI from './interfaces/IMoodleWSAPI';
+import IMoodleWSPayload from './interfaces/IMoodleWSPayload';
+import path from 'path';
 
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
   [k: string]: any;
 }
 
 //Load function definitions
-const json = fs.readFileSync('./api/functions.json', 'utf8');
+const json = fs.readFileSync(
+  path.resolve(__dirname, 'api', 'functions.json'),
+  'utf8'
+);
 const definition: IMoodleWSDefinition = JSON.parse(json);
 
 type AnyObject = { [key: string]: any };
@@ -37,14 +42,14 @@ export class MoodleError extends Error {
   }
 }
 
-class MoodleClient extends EventEmitter {
+export class MoodleClient extends EventEmitter {
   private _definition?: IMoodleWSDefinition;
   private _functions?: string[];
   public api: IExtMoodleWSAPI;
-  public flatten: (data: any) => any;
+  public static flatten: (data: any) => any;
   public request: (
-    item: string | IMoodleWSFunction,
-    data?: any
+    item: string | IMoodleWSFn,
+    payload?: IMoodleWSPayload
   ) => Promise<AnyObject | Error>;
   constructor(public options: IMoodleClientOptions) {
     super();
@@ -68,7 +73,7 @@ class MoodleClient extends EventEmitter {
     this.on('error', () => {});
 
     //Convert JSON to form data according to the moodle rules
-    this.flatten = function (data) {
+    MoodleClient.flatten = function (data) {
       let result: AnyObject = {};
 
       function dig(d: Diggable, prefix: string) {
@@ -105,11 +110,11 @@ class MoodleClient extends EventEmitter {
     };
 
     //Create a request function
-    this.request = function (item, data) {
+    this.request = function (item, payload) {
       return new Promise(async (resolve, reject) => {
         try {
           //Emit an event
-          this.emit('request', { definition: item, request: data });
+          this.emit('request', { definition: item, request: payload });
 
           //Get web service functio name
           let wsfunction = null;
@@ -142,35 +147,44 @@ class MoodleClient extends EventEmitter {
 
           //Build request options
           let options: RequestInit | null = null;
-          if (!data) {
-            //No data to be sent
-            options = {
-              method: 'GET',
-              headers: {
-                'User-Agent': userAgent,
-                Accept: 'application/json',
-              },
+          // if (!payload.body) {
+          //No data to be sent
+          options = {
+            method: 'GET',
+            headers: {
+              'User-Agent': userAgent,
+              Accept: 'application/json',
+            },
+          };
+          // } else if (typeof payload === 'object') {
+          //Build request body
+          // let form = new URLSearchParams();
+          // let obj = MoodleClient.flatten(payload);
+          // for (let key in obj) {
+          //   form.append(key, obj[key]);
+          // }
+          // options = {
+          //   method: 'POST',
+          //   headers: {
+          //     'User-Agent': userAgent,
+          //     Accept: 'application/json',
+          //     'Content-Type':
+          //       'application/x-www-form-urlencoded;charset=UTF-8',
+          //   },
+          //   body: form.toString(),
+          // };
+          // } else {
+          //   throw new Error('Expected data to be either null or object!');
+          // }
+
+          let finalPayload = payload;
+          if (payload && payload.data) {
+            finalPayload = {
+              ...finalPayload,
+              ...MoodleClient.flatten(payload.data),
             };
-          } else if (typeof data === 'object') {
-            //Build request body
-            let form = new URLSearchParams();
-            let obj = this.flatten(data);
-            for (let key in obj) {
-              form.append(key, obj[key]);
-            }
-            options = {
-              method: 'POST',
-              headers: {
-                'User-Agent': userAgent,
-                Accept: 'application/json',
-                'Content-Type':
-                  'application/x-www-form-urlencoded;charset=UTF-8',
-              },
-              body: form.toString(),
-            };
-          } else {
-            throw new Error('Expected data to be either null or object!');
           }
+          const form = new URLSearchParams(finalPayload);
 
           //Complete the URL
           let token = this.options.token || '';
@@ -179,7 +193,9 @@ class MoodleClient extends EventEmitter {
             '/webservice/rest/server.php?wstoken=' +
             token +
             '&moodlewsrestformat=json&wsfunction=' +
-            wsfunction;
+            wsfunction +
+            '&' +
+            form;
 
           //Make a HTTP request
           let res = await fetch(url, options);
@@ -190,7 +206,7 @@ class MoodleClient extends EventEmitter {
           //Emit an event
           this.emit('response', {
             definition: item,
-            request: data,
+            request: payload,
             response: result,
           });
 
@@ -234,14 +250,13 @@ class MoodleClient extends EventEmitter {
           item.module + '.' + item.facility + '.' + item.preferName
         );
         api[item.module][item.facility][item.preferName] = function (
-          data: any
+          payload: IMoodleWSPayload
         ) {
-          return client.request(item, data);
+          return client.request(item, payload);
         };
       }
     }
   }
 }
 
-export const MoodleApi = (options: IMoodleClientOptions) =>
-  new MoodleClient(options).api;
+export default (options: IMoodleClientOptions) => new MoodleClient(options).api;

@@ -1,0 +1,9 @@
+{
+  "items": [
+    {
+      "name": "core_course_get_categories",
+      "bodyType": "",
+      "resultType": "IMoodleCategory[]"
+    }
+  ]
+}
