@@ -14,6 +14,7 @@ import pkg from './package.json';
 import IMoodleWSAPI from './interfaces/IMoodleWSAPI';
 import IMoodleWSPayload from './interfaces/IMoodleWSPayload';
 import path from 'path';
+import NameValuePair from './types/NameValuePair';
 
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
   [k: string]: any;
@@ -47,6 +48,9 @@ export class MoodleClient extends EventEmitter {
   private _functions?: string[];
   public api: IExtMoodleWSAPI;
   public static flatten: (data: any) => any;
+  private static _format: (data: {
+    [k: string]: number | string | any[];
+  }) => any;
   public request: (
     item: string | IMoodleWSFn,
     payload?: IMoodleWSPayload
@@ -105,8 +109,23 @@ export class MoodleClient extends EventEmitter {
         }
       }
 
-      dig(data, '');
+      dig(MoodleClient._format(data), '');
       return result;
+    };
+
+    MoodleClient._format = function (data) {
+      const moodleData: NameValuePair<string, string>[] = [];
+      for (const key of Object.keys(data)) {
+        const currentItem = data[key];
+        if (currentItem instanceof Array) {
+          for (const value of currentItem) {
+            moodleData.push({ name: key, value: `${value}` });
+          }
+        } else {
+          moodleData.push({ name: key, value: data[key] as string });
+        }
+      }
+      return { data: moodleData };
     };
 
     //Create a request function
@@ -156,26 +175,6 @@ export class MoodleClient extends EventEmitter {
               Accept: 'application/json',
             },
           };
-          // } else if (typeof payload === 'object') {
-          //Build request body
-          // let form = new URLSearchParams();
-          // let obj = MoodleClient.flatten(payload);
-          // for (let key in obj) {
-          //   form.append(key, obj[key]);
-          // }
-          // options = {
-          //   method: 'POST',
-          //   headers: {
-          //     'User-Agent': userAgent,
-          //     Accept: 'application/json',
-          //     'Content-Type':
-          //       'application/x-www-form-urlencoded;charset=UTF-8',
-          //   },
-          //   body: form.toString(),
-          // };
-          // } else {
-          //   throw new Error('Expected data to be either null or object!');
-          // }
 
           let finalPayload = payload;
           if (payload && payload.data) {
