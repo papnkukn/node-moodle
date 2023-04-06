@@ -1,6 +1,6 @@
+import IMoodleWSCore from './IMoodleWSCore';
 import IMoodleWSAuth from './IMoodleWSAuth';
 import IMoodleWSBlock from './IMoodleWSBlock';
-import IMoodleWSCore from './IMoodleWSCore';
 import IMoodleWSEnrol from './IMoodleWSEnrol';
 import IMoodleWSGradereport from './IMoodleWSGradereport';
 import IMoodleWSGradingform from './IMoodleWSGradingform';
@@ -11,9 +11,9 @@ import IMoodleWSReport from './IMoodleWSReport';
 import IMoodleWSTool from './IMoodleWSTool';
 
 export default interface IMoodleWSAPI {
+  core: IMoodleWSCore;
   auth: IMoodleWSAuth;
   block: IMoodleWSBlock;
-  core: IMoodleWSCore;
   enrol: IMoodleWSEnrol;
   gradereport: IMoodleWSGradereport;
   gradingform: IMoodleWSGradingform;
