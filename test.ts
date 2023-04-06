@@ -72,9 +72,30 @@ const moodle = MoodleApi({
 //   console.log(res);
 // });
 
-moodle.mod.forum
-  .getForumDiscussions({ forumid: 28 })
-  .then((res) => console.log(res.discussions[0]));
+// moodle.mod.quiz
+//   .getUserAttempts({ quizid: 1360, status: 'all' })
+//   .then((res) => console.log(res.attempts.at(-1)!.state));
+
+moodle.mod.quiz.getAttemptData({ attemptid: 3660439, page: 0 }).then((res) => {
+  console.log(res);
+});
+
+// moodle.core.course.getCourseModule({ cmid: 5325 }).then((res) => {
+//   moodle.mod.quiz
+//     .getUserAttempts({ quizid: res.cm.instance, status: 'all' })
+//     .then((res) => {
+//       moodle.mod.quiz
+//         .getAttemptAccessInformation({
+//           quizid: res.attempts[0].quiz,
+//           attemptid: res.attempts[0].id,
+//         })
+//         .then((res) => console.log(res));
+//     });
+// });
+
+// moodle.core.course
+//   .getCourseModule({ cmid: 5325 })
+//   .then((res) => console.log(res));
 
 /* data: [
     {slots: 1, 'q3662334:2_:sequencecheck': 1, }
