@@ -1,2 +1,4 @@
-type ResourceType = 'file';
+enum ResourceType {
+  File = 'file',
+}
 export default ResourceType;
