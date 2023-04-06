@@ -1,9 +1,41 @@
 {
   "items": [
     {
+      "name": "core_webservice_get_site_info",
+      "body": "",
+      "result": { "type": "IMoodleSiteInfo" }
+    },
+    {
       "name": "core_course_get_categories",
-      "bodyType": "",
-      "resultType": "IMoodleCategory[]"
+      "body": "",
+      "result": { "type": "IMoodleCategory[]" }
+    },
+    {
+      "name": "core_course_get_courses_by_field",
+      "body": {
+        "type": "{field: 'category', value: number}"
+      },
+      "result": { "type": "IMoodleWSCoursesResponse" }
+    },
+    {
+      "name": "core_course_get_contents",
+      "body": { "type": "{courseid: number}" },
+      "result": { "type": "IMoodleCourseSection[]" }
+    },
+    {
+      "name": "mod_forum_get_forums_by_courses",
+      "body": {
+        "type": "{[k: string]: number | undefined ,'courseids[]'?: number}",
+        "optional": true
+      },
+      "result": { "type": "IMoodleForum[]" }
+    },
+    {
+      "name": "mod_forum_get_forum_discussions",
+      "body": {
+        "type": "{forumid: number}"
+      },
+      "result": { "type": "IMoodleDiscussionsResponse" }
     }
   ]
 }

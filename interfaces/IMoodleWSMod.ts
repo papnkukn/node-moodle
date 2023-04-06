@@ -1,4 +1,6 @@
 import IMoodleWSPayload from './IMoodleWSPayload';
+import IMoodleDiscussionsResponse from './IMoodleWSDiscussionsResponse';
+import IMoodleForum from './IMoodleForum';
 
 export default interface IMoodleWSMod {
   assign: {
@@ -91,9 +93,14 @@ export default interface IMoodleWSMod {
     getDiscussionPostsByUserid: (payload: IMoodleWSPayload) => Promise<any>;
     getForumAccessInformation: (payload: IMoodleWSPayload) => Promise<any>;
     getForumDiscussionPosts: (payload: IMoodleWSPayload) => Promise<any>;
-    getForumDiscussions: (payload: IMoodleWSPayload) => Promise<any>;
+    getForumDiscussions: (params: {
+      forumid: number;
+    }) => Promise<IMoodleDiscussionsResponse>;
     getForumDiscussionsPaginated: (payload: IMoodleWSPayload) => Promise<any>;
-    getForumsByCourses: (payload: IMoodleWSPayload) => Promise<any>;
+    getForumsByCourses: (params?: {
+      [k: string]: number | undefined;
+      'courseids[]'?: number;
+    }) => Promise<IMoodleForum[]>;
     prepareDraftAreaForPost: (payload: IMoodleWSPayload) => Promise<any>;
     setLockState: (payload: IMoodleWSPayload) => Promise<any>;
     setPinState: (payload: IMoodleWSPayload) => Promise<any>;

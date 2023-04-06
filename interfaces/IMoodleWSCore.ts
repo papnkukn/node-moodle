@@ -1,5 +1,8 @@
 import IMoodleWSPayload from './IMoodleWSPayload';
 import IMoodleCategory from './IMoodleCategory';
+import IMoodleCourseSection from './IMoodleCourseSection';
+import IMoodleWSCoursesResponse from './IMoodleWSCoursesResponse';
+import IMoodleSiteInfo from './IMoodleSiteInfo';
 
 export default interface IMoodleWSCore {
   auth: {
@@ -171,11 +174,16 @@ export default interface IMoodleWSCore {
     editSection: (payload: IMoodleWSPayload) => Promise<any>;
     getActivitiesOverview: (payload: IMoodleWSPayload) => Promise<any>;
     getCategories: () => Promise<IMoodleCategory[]>;
-    getContents: (payload: IMoodleWSPayload) => Promise<any>;
+    getContents: (params: {
+      courseid: number;
+    }) => Promise<IMoodleCourseSection[]>;
     getCourseModule: (payload: IMoodleWSPayload) => Promise<any>;
     getCourseModuleByInstance: (payload: IMoodleWSPayload) => Promise<any>;
     getCourses: (payload: IMoodleWSPayload) => Promise<any>;
-    getCoursesByField: (payload: IMoodleWSPayload) => Promise<any>;
+    getCoursesByField: (params: {
+      field: 'category';
+      value: number;
+    }) => Promise<IMoodleWSCoursesResponse>;
     getEnrolledCoursesByTimelineClassification: (
       payload: IMoodleWSPayload
     ) => Promise<any>;
@@ -401,6 +409,6 @@ export default interface IMoodleWSCore {
     viewUserProfile: (payload: IMoodleWSPayload) => Promise<any>;
   };
   webservice: {
-    getSiteInfo: (payload: IMoodleWSPayload) => Promise<any>;
+    getSiteInfo: () => Promise<IMoodleSiteInfo>;
   };
 }

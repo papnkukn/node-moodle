@@ -1,5 +1,13 @@
-export interface IMoodleWSFnSignature {
+interface IMoodleFnParamSignature {
+  type: string;
+  optional?: boolean;
+}
+
+interface IMoodleFnResSignature {
+  type: string;
+}
+export default interface IMoodleWSFnSignature {
   name: string;
-  bodyType?: string;
-  resultType?: string;
+  body?: IMoodleFnParamSignature | '';
+  result?: IMoodleFnResSignature | '';
 }
