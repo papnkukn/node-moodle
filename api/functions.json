@@ -1,6 +1,17 @@
 {
-  "created": "2021-05-08T20:43:38.038Z",
+  "created": "2023-04-06T21:26:34.714Z",
   "items": [
+    {
+      "area": "core_user",
+      "name": "core_user_search_identity",
+      "minVersion": "3.11",
+      "description": "Return list of users identities matching the given criteria in their name or other identity fields.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "user",
+      "preferName": "searchIdentity"
+    },
     {
       "area": "auth_email",
       "name": "auth_email_get_signup_settings",
@@ -93,17 +104,6 @@
     },
     {
       "area": "core_auth",
-      "name": "core_auth_resend_confirmation_email",
-      "minVersion": "3.6",
-      "description": "Resend confirmation email.",
-      "isAjax": true,
-      "isLogin": false,
-      "module": "core",
-      "facility": "auth",
-      "preferName": "resendConfirmationEmail"
-    },
-    {
-      "area": "core_auth",
       "name": "core_auth_request_password_reset",
       "minVersion": "3.4",
       "description": "Requests a password reset.",
@@ -112,6 +112,17 @@
       "module": "core",
       "facility": "auth",
       "preferName": "requestPasswordReset"
+    },
+    {
+      "area": "core_auth",
+      "name": "core_auth_resend_confirmation_email",
+      "minVersion": "3.6",
+      "description": "Resend confirmation email.",
+      "isAjax": true,
+      "isLogin": false,
+      "module": "core",
+      "facility": "auth",
+      "preferName": "resendConfirmationEmail"
     },
     {
       "area": "core_auth",
@@ -158,6 +169,28 @@
       "preferName": "getAsyncBackupProgress"
     },
     {
+      "area": "core_backup",
+      "name": "core_backup_get_copy_progress",
+      "minVersion": "3.9",
+      "description": "Gets the progress of course copy operations.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "backup",
+      "preferName": "getCopyProgress"
+    },
+    {
+      "area": "core_backup",
+      "name": "core_backup_submit_copy_form",
+      "minVersion": "3.9",
+      "description": "Handles ajax submission of course copy form.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "backup",
+      "preferName": "submitCopyForm"
+    },
+    {
       "area": "core_badges",
       "name": "core_badges_get_user_badges",
       "minVersion": "3.1",
@@ -192,6 +225,18 @@
       "module": "core",
       "facility": "block",
       "preferName": "getDashboardBlocks"
+    },
+    {
+      "area": "core_block",
+      "name": "core_block_fetch_addable_blocks",
+      "minVersion": "3.11",
+      "description": "Returns all addable blocks in a given page.",
+      "isAjax": true,
+      "isLogin": true,
+      "services": "moodle_mobile_app",
+      "module": "core",
+      "facility": "block",
+      "preferName": "fetchAddableBlocks"
     },
     {
       "area": "core_blog",
@@ -395,6 +440,18 @@
       "module": "core",
       "facility": "calendar",
       "preferName": "updateEventStartDay"
+    },
+    {
+      "area": "core_calendar",
+      "name": "core_calendar_get_calendar_export_token",
+      "minVersion": "3.10",
+      "description": "Return the auth token required for exporting a calendar.",
+      "isAjax": false,
+      "isLogin": false,
+      "services": "moodle_mobile_app",
+      "module": "core",
+      "facility": "calendar",
+      "preferName": "getCalendarExportToken"
     },
     {
       "area": "core_cohort",
@@ -1502,6 +1559,50 @@
       "preferName": "updateActivityCompletionStatusManually"
     },
     {
+      "area": "core_contentbank",
+      "name": "core_contentbank_delete_content",
+      "minVersion": "3.9",
+      "description": "Delete a content from the content bank.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "contentbank",
+      "preferName": "deleteContent"
+    },
+    {
+      "area": "core_contentbank",
+      "name": "core_contentbank_rename_content",
+      "minVersion": "3.9",
+      "description": "Rename a content in the content bank.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "contentbank",
+      "preferName": "renameContent"
+    },
+    {
+      "area": "core_contentbank",
+      "name": "core_contentbank_set_content_visibility",
+      "minVersion": "3.11",
+      "description": "Set the visibility of a content in the content bank.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "contentbank",
+      "preferName": "setContentVisibility"
+    },
+    {
+      "area": "core_course",
+      "name": "core_course_add_content_item_to_user_favourites",
+      "minVersion": "3.9",
+      "description": "Adds a content item (activity, resource or their subtypes) to the favourites for the user.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "course",
+      "preferName": "addContentItemToUserFavourites"
+    },
+    {
       "area": "core_course",
       "name": "core_course_check_updates",
       "minVersion": "3.2",
@@ -1614,6 +1715,17 @@
     },
     {
       "area": "core_course",
+      "name": "core_course_get_activity_chooser_footer",
+      "minVersion": "3.9",
+      "description": "Fetch the data for the activity chooser footer.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "course",
+      "preferName": "getActivityChooserFooter"
+    },
+    {
+      "area": "core_course",
       "name": "core_course_get_categories",
       "minVersion": "2.3",
       "description": "get categories",
@@ -1635,6 +1747,17 @@
       "module": "core",
       "facility": "course",
       "preferName": "getContents"
+    },
+    {
+      "area": "core_course",
+      "name": "core_course_get_course_content_items",
+      "minVersion": "3.9",
+      "description": "Fetch all the content items (activities, resources and their subtypes) for the activity picker",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "course",
+      "preferName": "getCourseContentItems"
     },
     {
       "area": "core_course",
@@ -1779,6 +1902,17 @@
     },
     {
       "area": "core_course",
+      "name": "core_course_remove_content_item_from_user_favourites",
+      "minVersion": "3.9",
+      "description": "Removes a content item (activity, resource or their subtypes) from the favourites for the user.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "course",
+      "preferName": "removeContentItemFromUserFavourites"
+    },
+    {
+      "area": "core_course",
       "name": "core_course_search_courses",
       "minVersion": "3.0",
       "description": "Search courses by (name, module, block, tag).",
@@ -1800,6 +1934,17 @@
       "module": "core",
       "facility": "course",
       "preferName": "setFavouriteCourses"
+    },
+    {
+      "area": "core_course",
+      "name": "core_course_toggle_activity_recommendation",
+      "minVersion": "3.9",
+      "description": "Adds or removes an activity as a recommendation in the activity chooser.",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "course",
+      "preferName": "toggleActivityRecommendation"
     },
     {
       "area": "core_course",
@@ -2039,6 +2184,30 @@
       "preferName": "upload"
     },
     {
+      "area": "core_files",
+      "name": "core_files_delete_draft_files",
+      "minVersion": "3.10",
+      "description": "Delete the indicated files (or directories) from a user draft file area.",
+      "isAjax": false,
+      "isLogin": false,
+      "services": "moodle_mobile_app",
+      "module": "core",
+      "facility": "files",
+      "preferName": "deleteDraftFiles"
+    },
+    {
+      "area": "core_files",
+      "name": "core_files_get_unused_draft_itemid",
+      "minVersion": "3.11",
+      "description": "Generate a new draft itemid for the current user.",
+      "isAjax": false,
+      "isLogin": false,
+      "services": "moodle_mobile_app",
+      "module": "core",
+      "facility": "files",
+      "preferName": "getUnusedDraftItemid"
+    },
+    {
       "area": "core_filters",
       "name": "core_filters_get_available_in_context",
       "minVersion": "3.4",
@@ -2060,6 +2229,17 @@
       "module": "core",
       "facility": "form",
       "preferName": "getFiletypesBrowserData"
+    },
+    {
+      "area": "core_form",
+      "name": "core_form_dynamic_form",
+      "minVersion": "3.11",
+      "description": "Process submission of a dynamic (modal) form",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "form",
+      "preferName": "dynamicForm"
     },
     {
       "area": "core_get",
@@ -2130,6 +2310,17 @@
     },
     {
       "area": "core_grades",
+      "name": "core_grades_create_gradecategory",
+      "minVersion": "3.10",
+      "description": "Create a grade category inside a course gradebook.",
+      "isAjax": false,
+      "isLogin": false,
+      "module": "core",
+      "facility": "grades",
+      "preferName": "createGradecategory"
+    },
+    {
+      "area": "core_grades",
       "name": "core_grades_get_grades",
       "minVersion": "2.7",
       "description": "Returns student course total grade and grades for activities. This function does not return category or manual items. This function is suitable for managers or teachers not students.",
@@ -2186,6 +2377,17 @@
       "module": "core",
       "facility": "grades",
       "preferName": "graderGradingpanelScaleStore"
+    },
+    {
+      "area": "core_grades",
+      "name": "core_grades_create_gradecategories",
+      "minVersion": "3.11",
+      "description": "Create grade categories inside a course gradebook.",
+      "isAjax": false,
+      "isLogin": false,
+      "module": "core",
+      "facility": "grades",
+      "preferName": "createGradecategories"
     },
     {
       "area": "core_grading",
@@ -3157,6 +3359,17 @@
       "module": "core",
       "facility": "output",
       "preferName": "loadTemplate"
+    },
+    {
+      "area": "core_payment",
+      "name": "core_payment_get_available_gateways",
+      "minVersion": "3.10",
+      "description": "Get the list of payment gateways that support the given component/area",
+      "isAjax": true,
+      "isLogin": true,
+      "module": "core",
+      "facility": "payment",
+      "preferName": "getAvailableGateways"
     },
     {
       "area": "core_question",
