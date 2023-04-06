@@ -35,7 +35,46 @@
       "body": {
         "type": "{forumid: number}"
       },
-      "result": { "type": "IMoodleDiscussionsResponse" }
+      "result": { "type": "IMoodleWSDiscussionsResponse" }
+    },
+    {
+      "name": "mod_forum_get_discussion_posts",
+      "body": {
+        "type": "{discussionid: number}"
+      },
+      "result": { "type": "IMoodleWSDiscussionPostsResponse" }
+    },
+    {
+      "name": "mod_quiz_get_user_attempts",
+      "body": {
+        "type": "{quizid: number, userid?: number, status: 'finished' | 'unfinished' | 'all', includepreveiews?: boolean}"
+      },
+      "result": { "type": "IMoodleWSAttemptsResponse" }
+    },
+    {
+      "name": "mod_quiz_get_quiz_access_information",
+      "body": {
+        "type": "{quizid: number}"
+      },
+      "result": { "type": "IMoodleQuizAccessInfo" }
+    },
+    {
+      "name": "mod_quiz_start_attempt",
+      "body": {
+        "type": "{quizid: number}"
+      },
+      "result": {
+        "type": "IMoodleWSStartAttemptResponse"
+      }
+    },
+    {
+      "name": "mod_quiz_get_attempt_data",
+      "body": {
+        "type": "{attemptid: number, page: number}"
+      },
+      "result": {
+        "type": "IMoodleAttemptData"
+      }
     }
   ]
 }
