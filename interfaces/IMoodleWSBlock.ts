@@ -1,12 +1,12 @@
-import IMoodleWSPayload from './IMoodleWSPayload';
+import IMoodleWSParams from './IMoodleWSParams';
 
 export default interface IMoodleWSBlock {
   recentlyaccesseditems: {
     /** List of items a user has accessed most recently. */
-    getRecentItems: (payload: IMoodleWSPayload) => Promise<any>;
+    getRecentItems: (params: IMoodleWSParams) => Promise<any>;
   };
   starredcourses: {
     /** Get users starred courses. */
-    getStarredCourses: (payload: IMoodleWSPayload) => Promise<any>;
+    getStarredCourses: (params: IMoodleWSParams) => Promise<any>;
   };
 }

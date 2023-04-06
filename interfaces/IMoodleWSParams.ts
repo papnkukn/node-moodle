@@ -1,4 +1,4 @@
-export default interface IMoodleWSPayload {
+export default interface IMoodleWSParams {
   [k: string]: any;
   quizid?: number;
   courseid?: number;

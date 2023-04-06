@@ -1,20 +1,20 @@
-import IMoodleWSPayload from './IMoodleWSPayload';
+import IMoodleWSParams from './IMoodleWSParams';
 
 export default interface IMoodleWSEnrol {
   guest: {
     /** Return guest enrolment instance information. */
-    getInstanceInfo: (payload: IMoodleWSPayload) => Promise<any>;
+    getInstanceInfo: (params: IMoodleWSParams) => Promise<any>;
   };
   manual: {
     /** Manual enrol users */
-    enrolUsers: (payload: IMoodleWSPayload) => Promise<any>;
+    enrolUsers: (params: IMoodleWSParams) => Promise<any>;
     /** Manual unenrol users */
-    unenrolUsers: (payload: IMoodleWSPayload) => Promise<any>;
+    unenrolUsers: (params: IMoodleWSParams) => Promise<any>;
   };
   self: {
     /** Self enrol the current user in the given course. */
-    enrolUser: (payload: IMoodleWSPayload) => Promise<any>;
+    enrolUser: (params: IMoodleWSParams) => Promise<any>;
     /** self enrolment instance information. */
-    getInstanceInfo: (payload: IMoodleWSPayload) => Promise<any>;
+    getInstanceInfo: (params: IMoodleWSParams) => Promise<any>;
   };
 }

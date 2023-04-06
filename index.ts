@@ -12,7 +12,7 @@ import IMoodleWSFn from './interfaces/IMoodleWSFn';
 //Load package info
 import pkg from './package.json';
 import IMoodleWSAPI from './interfaces/IMoodleWSAPI';
-import IMoodleWSPayload from './interfaces/IMoodleWSPayload';
+import IMoodleWSParams from './interfaces/IMoodleWSParams';
 import path from 'path';
 import NameValuePair from './types/NameValuePair';
 
@@ -53,7 +53,7 @@ export class MoodleClient extends EventEmitter {
   }) => any;
   public request: (
     item: string | IMoodleWSFn,
-    payload?: IMoodleWSPayload
+    payload?: IMoodleWSParams
   ) => Promise<AnyObject | Error>;
   constructor(public options: IMoodleClientOptions) {
     super();
@@ -249,7 +249,7 @@ export class MoodleClient extends EventEmitter {
           item.module + '.' + item.facility + '.' + item.preferName
         );
         api[item.module][item.facility][item.preferName] = function (
-          payload: IMoodleWSPayload
+          payload: IMoodleWSParams
         ) {
           return client.request(item, payload);
         };

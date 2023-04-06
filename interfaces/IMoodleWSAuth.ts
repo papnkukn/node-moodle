@@ -1,10 +1,10 @@
-import IMoodleWSPayload from './IMoodleWSPayload';
+import IMoodleWSParams from './IMoodleWSParams';
 
 export default interface IMoodleWSAuth {
   email: {
     /** Get the signup required settings and profile fields. */
-    getSignupSettings: (payload: IMoodleWSPayload) => Promise<any>;
+    getSignupSettings: (params: IMoodleWSParams) => Promise<any>;
     /** Adds a new user (pendingto be confirmed) in the site. */
-    signupUser: (payload: IMoodleWSPayload) => Promise<any>;
+    signupUser: (params: IMoodleWSParams) => Promise<any>;
   };
 }
