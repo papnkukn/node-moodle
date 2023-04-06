@@ -63,7 +63,18 @@ const moodle = MoodleApi({
 //   })
 //   .then((result) => console.log(result));
 
-moodle.core.course.getCategories().then((cats) => console.log(cats[0].name));
+// moodle.core.course.getCategories().then((cats) => console.log(cats[0].name));
+// moodle.mod.forum
+//   .getDiscussionPosts({ discussionid: 70 })
+//   .then((res) => console.log(res));
+
+// moodle.mod.forum.getForumDiscussions({ forumid: 28 }).then((res) => {
+//   console.log(res);
+// });
+
+moodle.mod.forum
+  .getForumDiscussions({ forumid: 28 })
+  .then((res) => console.log(res.discussions[0]));
 
 /* data: [
     {slots: 1, 'q3662334:2_:sequencecheck': 1, }
