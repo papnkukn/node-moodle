@@ -7,7 +7,7 @@ import fetch, { RequestInit } from 'node-fetch';
 import IMoodleErrorOptions from './interfaces/IMoodleErrorOptions';
 import IMoodleClientOptions from './interfaces/IMoodleClientOptions';
 import IMoodleWSDefinition from './interfaces/IMoodleWSDefinition';
-import IMoodleWSFn from './interfaces/IMoodleWSFunction';
+import IMoodleWSFn from './interfaces/IMoodleWSFn';
 
 //Load package info
 import pkg from './package.json';
