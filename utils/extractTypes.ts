@@ -2,7 +2,7 @@ import IMoodleWSDefinition from '../interfaces/IMoodleWSDefinition';
 import * as fs from 'fs';
 import * as prettier from 'prettier';
 import path from 'path';
-import { IMoodleWSFnSignature } from '../interfaces/IMoodleWSFnSignature';
+import IMoodleWSFnSignature from '../interfaces/IMoodleWSFnSignature';
 
 const PRETTIER_CONFIG: prettier.Options = {
   singleQuote: true,
@@ -91,9 +91,12 @@ const getInterfaceName = (module: IMoodleModule) =>
   `IMoodleWS${upperCaseFirst(module.name)}`;
 
 const parseTypeName = (typeName: string) => {
-  const rawName = /([\s\S]*)\[\]/.exec(typeName)![1];
-  let type: 'type' | 'interface' | undefined;
+  let type: 'type' | 'interface' | undefined = undefined;
   if (typeName.at(0) === 'I') type = 'interface';
+  let rawName = '';
+  if (type === 'interface') {
+    rawName = /(^[a-zA-Z_$][a-zA-Z_$0-9]*)[\[\]]*/.exec(typeName)![1];
+  }
   return { rawName, type };
 };
 
@@ -103,8 +106,10 @@ const writeFunctionSignature = (
 ) => {
   if (signature) {
     return `${func.name}: (${
-      signature.bodyType ? `params: ${signature.bodyType}` : ''
-    }) => Promise<${signature.resultType ? signature.resultType : 'void'}>;`;
+      signature.body
+        ? `params${signature.body.optional ? '?' : ''}: ${signature.body.type}`
+        : ''
+    }) => Promise<${signature.result ? signature.result.type : 'void'}>;`;
   } else {
     return `${func.name}: (payload: IMoodleWSPayload) => Promise<any>;`;
   }
@@ -141,13 +146,15 @@ const writeModuleImports = (module: IMoodleModule) => {
     for (const func of facility.functions) {
       const signature = signatures.find((sig) => sig.name === func.apiName);
       if (signature) {
-        if (signature.bodyType) {
-          const type = parseTypeName(signature.bodyType);
-          if (!imports.includes(type.rawName)) imports.push(type.rawName);
+        if (signature.body) {
+          const type = parseTypeName(signature.body.type);
+          if (!imports.includes(type.rawName) && type.type === 'interface')
+            imports.push(type.rawName);
         }
-        if (signature.resultType) {
-          const type = parseTypeName(signature.resultType);
-          if (!imports.includes(type.rawName)) imports.push(type.rawName);
+        if (signature.result) {
+          const type = parseTypeName(signature.result.type);
+          if (!imports.includes(type.rawName) && type.type === 'interface')
+            imports.push(type.rawName);
         }
       }
     }
