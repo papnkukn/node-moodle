@@ -12,8 +12,10 @@ export default interface IMoodleQuestion {
   hasautosavedstep: boolean;
   flagged: boolean;
   number: number;
+  state?: QuestionState;
   status: QuestionStatus;
   blockedbyprevious: boolean;
+  mark?: string;
   maxmark: number;
   settings: string;
 }
