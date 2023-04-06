@@ -1,4 +1,4 @@
-import IMoodleWSFn from './IMoodleWSFunction';
+import IMoodleWSFn from './IMoodleWSFn';
 
 export default interface IMoodleWSDefinition {
   created: string;
