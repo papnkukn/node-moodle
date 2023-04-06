@@ -1,6 +1,11 @@
 import IMoodleWSPayload from './IMoodleWSPayload';
-import IMoodleDiscussionsResponse from './IMoodleWSDiscussionsResponse';
+import IMoodleWSDiscussionPostsResponse from './IMoodleWSDiscussionPostsResponse';
+import IMoodleWSDiscussionsResponse from './IMoodleWSDiscussionsResponse';
 import IMoodleForum from './IMoodleForum';
+import IMoodleAttemptData from './IMoodleAttemptData';
+import IMoodleQuizAccessInfo from './IMoodleQuizAccessInfo';
+import IMoodleWSAttemptsResponse from './IMoodleWSAttemptsResponse';
+import IMoodleWSStartAttemptResponse from './IMoodleWSStartAttemptResponse';
 
 export default interface IMoodleWSMod {
   assign: {
@@ -89,13 +94,15 @@ export default interface IMoodleWSMod {
     canAddDiscussion: (payload: IMoodleWSPayload) => Promise<any>;
     deletePost: (payload: IMoodleWSPayload) => Promise<any>;
     getDiscussionPost: (payload: IMoodleWSPayload) => Promise<any>;
-    getDiscussionPosts: (payload: IMoodleWSPayload) => Promise<any>;
+    getDiscussionPosts: (params: {
+      discussionid: number;
+    }) => Promise<IMoodleWSDiscussionPostsResponse>;
     getDiscussionPostsByUserid: (payload: IMoodleWSPayload) => Promise<any>;
     getForumAccessInformation: (payload: IMoodleWSPayload) => Promise<any>;
     getForumDiscussionPosts: (payload: IMoodleWSPayload) => Promise<any>;
     getForumDiscussions: (params: {
       forumid: number;
-    }) => Promise<IMoodleDiscussionsResponse>;
+    }) => Promise<IMoodleWSDiscussionsResponse>;
     getForumDiscussionsPaginated: (payload: IMoodleWSPayload) => Promise<any>;
     getForumsByCourses: (params?: {
       [k: string]: number | undefined;
@@ -175,19 +182,31 @@ export default interface IMoodleWSMod {
   };
   quiz: {
     getAttemptAccessInformation: (payload: IMoodleWSPayload) => Promise<any>;
-    getAttemptData: (payload: IMoodleWSPayload) => Promise<any>;
+    getAttemptData: (params: {
+      attemptid: number;
+      page: number;
+    }) => Promise<IMoodleAttemptData>;
     getAttemptReview: (payload: IMoodleWSPayload) => Promise<any>;
     getAttemptSummary: (payload: IMoodleWSPayload) => Promise<any>;
     getCombinedReviewOptions: (payload: IMoodleWSPayload) => Promise<any>;
-    getQuizAccessInformation: (payload: IMoodleWSPayload) => Promise<any>;
+    getQuizAccessInformation: (params: {
+      quizid: number;
+    }) => Promise<IMoodleQuizAccessInfo>;
     getQuizFeedbackForGrade: (payload: IMoodleWSPayload) => Promise<any>;
     getQuizRequiredQtypes: (payload: IMoodleWSPayload) => Promise<any>;
     getQuizzesByCourses: (payload: IMoodleWSPayload) => Promise<any>;
-    getUserAttempts: (payload: IMoodleWSPayload) => Promise<any>;
+    getUserAttempts: (params: {
+      quizid: number;
+      userid?: number;
+      status: 'finished' | 'unfinished' | 'all';
+      includepreveiews?: boolean;
+    }) => Promise<IMoodleWSAttemptsResponse>;
     getUserBestGrade: (payload: IMoodleWSPayload) => Promise<any>;
     processAttempt: (payload: IMoodleWSPayload) => Promise<any>;
     saveAttempt: (payload: IMoodleWSPayload) => Promise<any>;
-    startAttempt: (payload: IMoodleWSPayload) => Promise<any>;
+    startAttempt: (params: {
+      quizid: number;
+    }) => Promise<IMoodleWSStartAttemptResponse>;
     viewAttempt: (payload: IMoodleWSPayload) => Promise<any>;
     viewAttemptReview: (payload: IMoodleWSPayload) => Promise<any>;
     viewAttemptSummary: (payload: IMoodleWSPayload) => Promise<any>;
