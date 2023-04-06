@@ -1,4 +1,6 @@
 import MoodleApi, { MoodleClient } from '.';
+import MoodleAttemptUpdate from './classes/MoodleAttemptUpdate';
+import AttemptState from './types/AttemptState';
 
 const moodle = MoodleApi({
   baseUrl: 'http://aunonline.aun.edu.eg/med-ns/',
@@ -76,10 +78,6 @@ const moodle = MoodleApi({
 //   .getUserAttempts({ quizid: 1360, status: 'all' })
 //   .then((res) => console.log(res.attempts.at(-1)!.state));
 
-moodle.mod.quiz.getAttemptData({ attemptid: 3660439, page: 0 }).then((res) => {
-  console.log(res);
-});
-
 // moodle.core.course.getCourseModule({ cmid: 5325 }).then((res) => {
 //   moodle.mod.quiz
 //     .getUserAttempts({ quizid: res.cm.instance, status: 'all' })
@@ -92,6 +90,10 @@ moodle.mod.quiz.getAttemptData({ attemptid: 3660439, page: 0 }).then((res) => {
 //         .then((res) => console.log(res));
 //     });
 // });
+
+moodle.mod.quiz
+  .getAttemptAccessInformation({ quizid: 1436 })
+  .then((res) => console.log(res));
 
 // moodle.core.course
 //   .getCourseModule({ cmid: 5325 })
