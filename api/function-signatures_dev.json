@@ -75,6 +75,15 @@
       "result": {
         "type": "IMoodleAttemptData"
       }
+    },
+    {
+      "name": "mod_quiz_save_attempt",
+      "body": {
+        "type": "{attemptid: number, data: {slots: number | number[], [k: string]: number | number[]}}"
+      },
+      "result": {
+        "type": "IMoodleWSStatus"
+      }
     }
   ]
 }

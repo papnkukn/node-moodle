@@ -104,15 +104,26 @@ const writeFunctionSignature = (
   func: IMoodleFunction,
   signature?: IMoodleWSFnSignature
 ) => {
+  let renderedSignature: string = `/** ${
+    definition.items.find((item) => item.name === func.apiName)?.description
+  } */\n`;
   if (signature) {
-    return `${func.name}: (${
-      signature.body
-        ? `params${signature.body.optional ? '?' : ''}: ${signature.body.type}`
-        : ''
-    }) => Promise<${signature.result ? signature.result.type : 'void'}>;`;
+    renderedSignature = renderedSignature.concat(
+      `${func.name}: (${
+        signature.body
+          ? `params${signature.body.optional ? '?' : ''}: ${
+              signature.body.type
+            }`
+          : ''
+      }) => Promise<${signature.result ? signature.result.type : 'void'}>;`
+    );
   } else {
-    return `${func.name}: (payload: IMoodleWSPayload) => Promise<any>;`;
+    renderedSignature = renderedSignature.concat(
+      `${func.name}: (payload: IMoodleWSPayload) => Promise<any>;`
+    );
   }
+
+  return renderedSignature;
 };
 
 const writeFacilityFunctions = (facility: IMoodleFacility) => {
