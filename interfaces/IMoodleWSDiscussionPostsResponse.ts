@@ -1,4 +1,5 @@
 import IMoodlePost from './IMoodlePost';
+import IMoodleWSWarning from './IMoodleWSWarning';
 
 export default interface IMoodleWSDiscussionPostsResponse {
   posts: IMoodlePost[];
@@ -13,5 +14,5 @@ export default interface IMoodleWSDiscussionPostsResponse {
     scales: unknown[];
     ratings: unknown[];
   };
-  warnings: unknown[];
+  warnings: IMoodleWSWarning[];
 }
