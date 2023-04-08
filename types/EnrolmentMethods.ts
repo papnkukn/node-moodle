@@ -1,6 +1,6 @@
-enum EnrollmentMethod {
+enum EnrolmentMethods {
   Self = 'self',
   Manual = 'manual',
   Guest = 'guest',
 }
-export default EnrollmentMethod;
+export default EnrolmentMethods;

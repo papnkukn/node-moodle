@@ -1,4 +1,4 @@
-import AttemptState from '../types/AttemptState';
+import AttemptStates from '../types/AttemptStates';
 
 export default interface IMoodleAttempt {
   id: number;
@@ -9,7 +9,7 @@ export default interface IMoodleAttempt {
   layout: string;
   currentpage: number;
   preview: number;
-  state: AttemptState;
+  state: AttemptStates;
   timestart: number;
   timefinish: number;
   timemodified: number;

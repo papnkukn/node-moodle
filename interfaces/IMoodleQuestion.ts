@@ -1,9 +1,9 @@
-import QuestionStatus from '../types/QuestionStatus';
-import QuestionType from '../types/QuestionType';
+import QuestionStatuses from '../types/QuestionStatuses';
+import QuestionTypes from '../types/QuestionTypes';
 
 export default interface IMoodleQuestion {
   slot: number;
-  type: QuestionType;
+  type: QuestionTypes;
   page: number;
   html: string;
   responsefileareas: unknown[];
@@ -12,8 +12,8 @@ export default interface IMoodleQuestion {
   hasautosavedstep: boolean;
   flagged: boolean;
   number: number;
-  state?: QuestionState;
-  status: QuestionStatus;
+  state?: QuestionStates;
+  status: QuestionStatuses;
   blockedbyprevious: boolean;
   mark?: string;
   maxmark: number;

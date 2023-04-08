@@ -1,4 +1,4 @@
-import EnrollmentMethod from '../types/EnrollmentMethod';
+import EnrolmentMethods from '../types/EnrolmentMethods';
 import NameValuePair from '../types/NameValuePair';
 import NumericBoolean from '../types/NumericBoolean';
 import IMoodleCourseFilter from './IMoodleCourseFilter';
@@ -18,7 +18,7 @@ export default interface IMoodleCourse {
   showactivitydates: boolean;
   showcompletionconditions: boolean;
   contacts: unknown[];
-  enrollmentmethods: EnrollmentMethod[];
+  enrollmentmethods: EnrolmentMethods[];
   format?: string;
   showgrades?: NumericBoolean;
   newsitems?: number;
