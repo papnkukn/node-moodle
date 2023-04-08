@@ -1,8 +1,8 @@
 {
-  "name": "moodlejs",
+  "name": "moodle-js",
   "version": "1.0.0",
-  "description": "Moodle Web Service API client",
-  "main": "index.ts",
+  "description": "Moodle Web Service API client with typechecking",
+  "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js",
     "table": "node utils/table.js --update-standalone",
