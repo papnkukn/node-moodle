@@ -9,8 +9,10 @@ import IMoodleWSMessage from './IMoodleWSMessage';
 import IMoodleWSMod from './IMoodleWSMod';
 import IMoodleWSReport from './IMoodleWSReport';
 import IMoodleWSTool from './IMoodleWSTool';
+import IMoodleWSAPIConfig from './IMoodleWSAPIConfig';
 
 export default interface IMoodleWSAPI {
+  config: IMoodleWSAPIConfig;
   core: IMoodleWSCore;
   auth: IMoodleWSAuth;
   block: IMoodleWSBlock;

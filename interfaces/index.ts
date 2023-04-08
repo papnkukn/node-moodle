@@ -55,8 +55,12 @@ import type IMoodleWSStartAttemptResponse from './IMoodleWSStartAttemptResponse'
 import type IMoodleWSStatusResponse from './IMoodleWSStatusResponse';
 import type IMoodleWSTool from './IMoodleWSTool';
 import type IMoodleWSWarning from './IMoodleWSWarning';
+import type IMoodleWSCredentials from './IMoodleWSCredentials';
+import type IMoodleWSAPIConfig from './IMoodleWSAPIConfig';
 
 export type {
+  IMoodleWSAPIConfig,
+  IMoodleWSCredentials,
   IMoodleAttachment,
   IMoodleAttempt,
   IMoodleAttemptAccessInfo,
