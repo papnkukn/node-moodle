@@ -7,7 +7,7 @@ A simple and developer friendly TypeScript module to perform Web Service (API) c
 Install the module
 
 ```bash
-npm install node-moodle
+npm install moodle-js
 ```
 
 Get site info (using Promised callbacks)
@@ -51,9 +51,14 @@ async function main() {
 main();
 ```
 
-Changing the token on the fly:
+## Intellisense + Typechecking
+
+![](https://media.giphy.com/media/GA0jKe1PWuDcIP7rO7/giphy.gif)
+
+## Changing the token on the fly
+
 Instead of having to instantiate a new client instance every time you want to access your website
-as a different user, you can change the api token on the fly without changing the client instance
+as a different user, you can change the api token on the fly without changing the client instance.
 
 ```ts
 import MoodleApi from 'moodle-js';
@@ -63,15 +68,15 @@ async function main() {
   try {
     const { fullname: firstName } = await moodle.core.webservice.getSiteInfo();
     console.log(firstName);
+
     moodle.config.token = '3752235c2467122123cc04b821bd27cd';
+
     const { fullname: secondName } = await moodle.core.webservice.getSiteInfo();
     console.log(secondName);
-    console.log(sections[0].name);
 
     /*
-    logs:
-    John Smith
-    Frank William
+      John Smith
+      Frank William
     */
   }
   catch (err) {
@@ -82,7 +87,8 @@ async function main() {
 main();
 ```
 
-Getting your api token:
+## Getting your api token.
+
 if you don't immediately have your token to pass to the api you can import MoodleClient directly
 and use the authenticate method to get one.
 
@@ -101,7 +107,9 @@ async function main() {
       baseUrl: YOUR_WEBSITE_URL,
       credentials: { username: 'AwesomeJohn', password: 'SmartPa33word' },
     });
+
     moodle.api.config.token = token;
+
     const { fullname: firstName } = await moodle.core.webservice.getSiteInfo();
     /*
     logs:
@@ -161,6 +169,8 @@ const form = MoodleClient.flatten({
 
 console.log(form); //users[0][firstname]=Foo&users[0][lastname]=Bar...
 ```
+
+However, there is no need to invoke the function outside the code as anything passed as `data` parameter to api functions is automatically flattened and formatted in the right way.
 
 ## List of functions
 
