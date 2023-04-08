@@ -1,18 +1,20 @@
 import os from 'os';
 import fs from 'fs';
-import { EventEmitter } from 'events';
 import { URLSearchParams } from 'url';
 import fetch, { RequestInit } from 'node-fetch';
+import debug from 'debug';
 
-import IMoodleErrorOptions from './interfaces/IMoodleErrorOptions';
-import IMoodleClientOptions from './interfaces/IMoodleClientOptions';
-import IMoodleWSDefinition from './interfaces/IMoodleWSDefinition';
-import IMoodleWSFn from './interfaces/IMoodleWSFn';
+import {
+  IMoodleErrorOptions,
+  IMoodleClientOptions,
+  IMoodleWSDefinition,
+  IMoodleWSFn,
+  IMoodleWSAPI,
+  IMoodleWSParams,
+} from './interfaces';
 
 //Load package info
 import pkg from './package.json';
-import IMoodleWSAPI from './interfaces/IMoodleWSAPI';
-import IMoodleWSParams from './interfaces/IMoodleWSParams';
 import path from 'path';
 import NameValuePair from './types/NameValuePair';
 
@@ -43,22 +45,21 @@ export class MoodleError extends Error {
   }
 }
 
-export class MoodleClient extends EventEmitter {
+export class MoodleClient {
   private _definition?: IMoodleWSDefinition;
   private _functions?: string[];
-  public api: IExtMoodleWSAPI;
-  public static flatten: (data: any) => any;
-  public request: (
-    item: string | IMoodleWSFn,
-    payload?: IMoodleWSParams
-  ) => Promise<AnyObject | Error>;
   private static _format: (data: {
     [k: string]: number | string | any[];
   }) => any;
   private static _prepareParams: (params: IMoodleWSParams) => URLSearchParams;
-  constructor(public options: IMoodleClientOptions) {
-    super();
 
+  public api: IExtMoodleWSAPI;
+  public request: (
+    item: IMoodleWSFn,
+    payload?: IMoodleWSParams
+  ) => Promise<AnyObject | Error>;
+  public static flatten: (data: any) => any;
+  constructor(public options: IMoodleClientOptions) {
     //Check the URL syntax
     if (!/^https?:\/\//g.test(options.baseUrl)) {
       throw new Error("Argument 'options.baseUrl' must be a URL string.");
@@ -73,9 +74,6 @@ export class MoodleClient extends EventEmitter {
 
     //Sanitize base URL - trim trailing slash
     options.baseUrl = options.baseUrl.trim().replace(/\/$/g, '');
-
-    //Skip errors by default
-    this.on('error', () => {});
 
     //Convert JSON to form data according to the moodle rules
     MoodleClient.flatten = function (data) {
@@ -153,17 +151,13 @@ export class MoodleClient extends EventEmitter {
     //Create a request function
     this.request = function (item, params) {
       return new Promise(async (resolve, reject) => {
+        let fnDebugger: debug.Debugger;
         try {
-          //Emit an event
-          this.emit('request', { definition: item, request: params });
-
           //Get web service functio name
           let wsfunction = null;
-          if (typeof item === 'string') {
-            wsfunction = item;
-          } else if (typeof item === 'object') {
-            wsfunction = item.name;
-          }
+          wsfunction = item.name;
+          fnDebugger = debug(`moodle:${item.module}:${item.facility}`);
+          fnDebugger(`Calling ${item.preferName}...`);
 
           //Verify if function name is set
           if (!wsfunction || wsfunction.length === 0) {
@@ -218,13 +212,6 @@ export class MoodleClient extends EventEmitter {
           //Expected JSON as data object
           let result = await res.json();
 
-          //Emit an event
-          this.emit('response', {
-            definition: item,
-            request: params,
-            response: result,
-          });
-
           //Moodle always returns HTTP status code 200
           //Error can be detected by object properties
           if (typeof result.exception === 'string') {
@@ -232,9 +219,18 @@ export class MoodleClient extends EventEmitter {
           }
 
           //Success
+          fnDebugger!(
+            `Successfully called ${item.preferName} with parameters: ${
+              JSON.stringify(params) ?? 'null'
+            }.`
+          );
           resolve(result as AnyObject);
         } catch (err) {
-          this.emit('error', err);
+          fnDebugger!(
+            `Failed to call ${
+              item.preferName
+            } with parameters: ${JSON.stringify(params)}.`
+          );
           reject(err as Error);
         }
       });
