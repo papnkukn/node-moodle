@@ -1,8 +1,5 @@
-interface NameValuePair<K, V> {
-  name: K;
-  value: V;
-}
+import NameValuePair from '../types/NameValuePair';
 
-export interface IMoodleWSData {
-  data: [NameValuePair<any, any>];
+export default interface IMoodleWSData {
+  data: [NameValuePair];
 }
