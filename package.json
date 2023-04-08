@@ -1,10 +1,9 @@
 {
   "name": "moodle-js",
   "version": "1.0.0",
-  "description": "Moodle Web Service API client with typechecking",
+  "description": "Moodle Web Service API client with intellisense and typechecking",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*.js",
     "table": "node utils/table.js --update-standalone",
     "extract": "node utils/extract.js"
   },

@@ -5,8 +5,9 @@
 !*.d.ts
 
 tsconfig.json
-utils_dev
+utils_dev/
 .prettierrc
+.gitignore
 test.ts
 api/function-signatures_dev.json
 api/functions.html
