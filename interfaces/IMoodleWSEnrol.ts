@@ -1,4 +1,5 @@
 import IMoodleWSParams from './IMoodleWSParams';
+import IMoodleWSStatusResponse from './IMoodleWSStatusResponse';
 
 export default interface IMoodleWSEnrol {
   guest: {
@@ -13,7 +14,9 @@ export default interface IMoodleWSEnrol {
   };
   self: {
     /** Self enrol the current user in the given course. */
-    enrolUser: (params: IMoodleWSParams) => Promise<any>;
+    enrolUser: (params: {
+      courseid: number;
+    }) => Promise<IMoodleWSStatusResponse>;
     /** self enrolment instance information. */
     getInstanceInfo: (params: IMoodleWSParams) => Promise<any>;
   };

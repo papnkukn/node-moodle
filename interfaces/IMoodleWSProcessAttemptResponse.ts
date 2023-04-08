@@ -1,7 +1,7 @@
-import AttemptState from '../types/AttemptState';
+import AttemptStates from '../types/AttemptStates';
 import IMoodleWSWarning from './IMoodleWSWarning';
 
 export default interface IMoodleWSProcessAttemptResponse {
-  state: AttemptState;
+  state: AttemptStates;
   warnings: IMoodleWSWarning[];
 }

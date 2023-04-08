@@ -11,6 +11,13 @@ import MoodleAttemptUpdate from '../classes/MoodleAttemptUpdate';
 import NumericBoolean from '../types/NumericBoolean';
 import IMoodleWSProcessAttemptResponse from './IMoodleWSProcessAttemptResponse';
 import IMoodleAttemptReview from './IMoodleAttemptReview';
+import IMoodleAttemptAccessInfo from './IMoodleAttemptAccessInfo';
+import IMoodleWSAttemptSummaryResponse from './IMoodleWSAttemptSummaryResponse';
+import IMoodleQuizFeedback from './IMoodleQuizFeedback';
+import IMoodleWSBestGradeResponse from './IMoodleWSBestGradeResponse';
+import IMoodleWSQuizzesResponse from './IMoodleWSQuizzesResponse';
+import IMoodleWSReviewOptionsResponse from './IMoodleWSReviewOptionsResponse';
+import IMoodleWSQTypesResponse from './IMoodleWSQTypesResponse';
 
 export default interface IMoodleWSMod {
   assign: {
@@ -183,6 +190,7 @@ export default interface IMoodleWSMod {
     /** Returns a list of forum discussions optionally sorted and paginated. */
     getForumDiscussions: (params: {
       forumid: number;
+      page?: number;
     }) => Promise<IMoodleWSDiscussionsResponse>;
     /** Returns a list of forum discussions optionally sorted and paginated. */
     getForumDiscussionsPaginated: (params: IMoodleWSParams) => Promise<any>;
@@ -320,7 +328,9 @@ export default interface IMoodleWSMod {
   };
   quiz: {
     /** Return access information for a given attempt in a quiz. */
-    getAttemptAccessInformation: (params: IMoodleWSParams) => Promise<any>;
+    getAttemptAccessInformation: (params: {
+      quizid: number;
+    }) => Promise<IMoodleAttemptAccessInfo>;
     /** Returns information for the given attempt page for a quiz attempt in progress. */
     getAttemptData: (params: {
       attemptid: number;
@@ -331,19 +341,30 @@ export default interface IMoodleWSMod {
       attemptid: number;
     }) => Promise<IMoodleAttemptReview>;
     /** Returns a summary of a quiz attempt before it is submitted. */
-    getAttemptSummary: (params: IMoodleWSParams) => Promise<any>;
+    getAttemptSummary: (params: {
+      attemptid: number;
+    }) => Promise<IMoodleWSAttemptSummaryResponse>;
     /** Combines the review options from a number of different quiz attempts. */
-    getCombinedReviewOptions: (params: IMoodleWSParams) => Promise<any>;
+    getCombinedReviewOptions: (params: {
+      quizid: number;
+    }) => Promise<IMoodleWSReviewOptionsResponse>;
     /** Return access information for a given quiz. */
     getQuizAccessInformation: (params: {
       quizid: number;
     }) => Promise<IMoodleQuizAccessInfo>;
     /** Get the feedback text that should be show to a student who got the given grade in the given quiz. */
-    getQuizFeedbackForGrade: (params: IMoodleWSParams) => Promise<any>;
+    getQuizFeedbackForGrade: (params: {
+      quizid: number;
+      grade: number;
+    }) => Promise<IMoodleQuizFeedback>;
     /** Return the potential question types that would be required for a given quiz. */
-    getQuizRequiredQtypes: (params: IMoodleWSParams) => Promise<any>;
+    getQuizRequiredQtypes: (params: {
+      quizid: number;
+    }) => Promise<IMoodleWSQTypesResponse>;
     /** Returns a list of quizzes in a provided list of courses, if no list is provided all quizzes that the user can view will be returned. */
-    getQuizzesByCourses: (params: IMoodleWSParams) => Promise<any>;
+    getQuizzesByCourses: (params: {
+      courseids: number[];
+    }) => Promise<IMoodleWSQuizzesResponse>;
     /** Return a list of attempts for the given quiz and user. */
     getUserAttempts: (params: {
       quizid: number;
@@ -352,7 +373,10 @@ export default interface IMoodleWSMod {
       includepreveiews?: boolean;
     }) => Promise<IMoodleWSAttemptsResponse>;
     /** Get the best current grade for the given user on a quiz. */
-    getUserBestGrade: (params: IMoodleWSParams) => Promise<any>;
+    getUserBestGrade: (params: {
+      quizid: number;
+      userid: number;
+    }) => Promise<IMoodleWSBestGradeResponse>;
     /** Process responses during an attempt at a quiz and also deals with attempts finishing. */
     processAttempt: (params: {
       attemptid: number | string;
@@ -370,19 +394,28 @@ export default interface IMoodleWSMod {
       quizid: number;
     }) => Promise<IMoodleWSStartAttemptResponse>;
     /** Trigger the attempt viewed event. */
-    viewAttempt: (params: IMoodleWSParams) => Promise<any>;
+    viewAttempt: (params: {
+      attemptid: number;
+      page: number;
+    }) => Promise<IMoodleWSStatusResponse>;
     /** Trigger the attempt reviewed event. */
-    viewAttemptReview: (params: IMoodleWSParams) => Promise<any>;
+    viewAttemptReview: (params: {
+      attemptid: number;
+    }) => Promise<IMoodleWSStatusResponse>;
     /** Trigger the attempt summary viewed event. */
-    viewAttemptSummary: (params: IMoodleWSParams) => Promise<any>;
+    viewAttemptSummary: (params: {
+      attemptid: number;
+    }) => Promise<IMoodleWSStatusResponse>;
     /** Trigger the course module viewed event and update the module completion status. */
-    viewQuiz: (params: IMoodleWSParams) => Promise<any>;
+    viewQuiz: (params: { quizid: number }) => Promise<IMoodleWSStatusResponse>;
   };
   resource: {
     /** Returns a list of files in a provided list of courses, if no list is provided all files that the user can view will be returned. */
     getResourcesByCourses: (params: IMoodleWSParams) => Promise<any>;
     /** Trigger the course module viewed event and update the module completion status. */
-    viewResource: (params: IMoodleWSParams) => Promise<any>;
+    viewResource: (params: {
+      resourceid: number;
+    }) => Promise<IMoodleWSStatusResponse>;
   };
   scorm: {
     /** Return capabilities information for a given scorm. */
@@ -418,7 +451,7 @@ export default interface IMoodleWSMod {
     /** Returns a list of urls in a provided list of courses, if no list is provided all urls that the user can view will be returned. */
     getUrlsByCourses: (params: IMoodleWSParams) => Promise<any>;
     /** Trigger the course module viewed event and update the module completion status. */
-    viewUrl: (params: IMoodleWSParams) => Promise<any>;
+    viewUrl: (params: { urlid: number }) => Promise<IMoodleWSStatusResponse>;
   };
   wiki: {
     /** Save the contents of a page. */

@@ -3,6 +3,7 @@ import IMoodleCategory from './IMoodleCategory';
 import IMoodleCourseSection from './IMoodleCourseSection';
 import IMoodleWSCoursesResponse from './IMoodleWSCoursesResponse';
 import IMoodleSiteInfo from './IMoodleSiteInfo';
+import IMoodleWSCourseModuleResponse from './IMoodleWSCourseModuleResponse';
 
 export default interface IMoodleWSCore {
   user: {
@@ -377,7 +378,9 @@ export default interface IMoodleWSCore {
     /** Fetch all the content items (activities, resources and their subtypes) for the activity picker */
     getCourseContentItems: (params: IMoodleWSParams) => Promise<any>;
     /** Return information about a course module. */
-    getCourseModule: (params: IMoodleWSParams) => Promise<any>;
+    getCourseModule: (params: {
+      cmid: number;
+    }) => Promise<IMoodleWSCourseModuleResponse>;
     /** Return information about a given module name and instance id. */
     getCourseModuleByInstance: (params: IMoodleWSParams) => Promise<any>;
     /** Return course details */
