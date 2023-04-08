@@ -11,12 +11,16 @@ import {
   IMoodleWSFn,
   IMoodleWSAPI,
   IMoodleWSParams,
+  IMoodleWSCredentials,
 } from './interfaces';
+
+import IMoodleWSAuthResponse from './interfaces/IMoodleWSAuthResponse';
 
 //Load package info
 import pkg from './package.json';
 import path from 'path';
 import NameValuePair from './types/NameValuePair';
+import IMoodleWSAPIConfig from './interfaces/IMoodleWSAPIConfig';
 
 interface IExtMoodleWSAPI extends IMoodleWSAPI {
   [k: string]: any;
@@ -37,9 +41,9 @@ export class MoodleError extends Error {
   errorcode?: number;
   debuginfo?: string;
   constructor(options: IMoodleErrorOptions) {
-    super(options.message);
+    super(options.message || options.error);
     this.name = 'MoodleError';
-    this.exception = options.exception;
+    this.exception = options.exception ?? 'moodle_exception';
     this.errorcode = options.errorcode;
     this.debuginfo = options.debuginfo;
   }
@@ -48,17 +52,8 @@ export class MoodleError extends Error {
 export class MoodleClient {
   private _definition?: IMoodleWSDefinition;
   private _functions?: string[];
-  private static _format: (data: {
-    [k: string]: number | string | any[];
-  }) => any;
-  private static _prepareParams: (params: IMoodleWSParams) => URLSearchParams;
+  public api!: IExtMoodleWSAPI;
 
-  public api: IExtMoodleWSAPI;
-  public request: (
-    item: IMoodleWSFn,
-    payload?: IMoodleWSParams
-  ) => Promise<AnyObject | Error>;
-  public static flatten: (data: any) => any;
   constructor(public options: IMoodleClientOptions) {
     //Check the URL syntax
     if (!/^https?:\/\//g.test(options.baseUrl)) {
@@ -71,171 +66,13 @@ export class MoodleClient {
         "Argument 'options.baseUrl' should NOT contain the complete URL. Hint: provide base URL such as https://mooodle.example.com"
       );
     }
+    this._loadApi();
 
     //Sanitize base URL - trim trailing slash
     options.baseUrl = options.baseUrl.trim().replace(/\/$/g, '');
+  }
 
-    //Convert JSON to form data according to the moodle rules
-    MoodleClient.flatten = function (data) {
-      let result: AnyObject = {};
-
-      function dig(d: Diggable, prefix: string) {
-        if (typeof d === 'string' || typeof d === 'number') {
-          result[prefix] = d;
-          return;
-        }
-
-        for (let key in d as AnyObject) {
-          let item = (d as AnyObject)[key];
-          if (item === null) {
-            continue;
-          } else if (item instanceof Array) {
-            for (var i = 0; i < item.length; i++) {
-              dig(
-                item[i],
-                prefix.length === 0
-                  ? prefix + key + '[' + i + ']' //Root level has no square brackets
-                  : prefix + '[' + key + '][' + i + ']' //Deeper levels must include brackets
-              );
-            }
-          } else if (typeof item === 'object') {
-            for (let i in item as AnyObject) {
-              dig(item, prefix + key + '[' + i + ']');
-            }
-          } else {
-            result[prefix + '[' + key + ']'] = item;
-          }
-        }
-      }
-
-      dig(data, '');
-      return result;
-    };
-
-    MoodleClient._format = function (data) {
-      const moodleData: NameValuePair<string, string>[] = [];
-      for (const key of Object.keys(data)) {
-        const currentItem = data[key];
-        if (currentItem instanceof Array) {
-          for (const value of currentItem) {
-            moodleData.push({ name: key, value: `${value}` });
-          }
-        } else {
-          moodleData.push({ name: key, value: data[key] as string });
-        }
-      }
-      return { data: moodleData };
-    };
-
-    MoodleClient._prepareParams = function (params) {
-      let finalParams: IMoodleWSParams;
-      finalParams = { ...params };
-      for (const key of Object.keys(params)) {
-        const item = finalParams[key];
-        if (item instanceof Array) {
-          delete finalParams[key];
-          finalParams = {
-            ...finalParams,
-            ...MoodleClient.flatten({ [key]: item }),
-          };
-        }
-      }
-      if (finalParams.data)
-        finalParams = {
-          ...finalParams,
-          ...MoodleClient.flatten(MoodleClient._format(params.data)),
-        };
-      return new URLSearchParams(finalParams as any);
-    };
-
-    //Create a request function
-    this.request = function (item, params) {
-      return new Promise(async (resolve, reject) => {
-        let fnDebugger: debug.Debugger;
-        try {
-          //Get web service functio name
-          let wsfunction = null;
-          wsfunction = item.name;
-          fnDebugger = debug(`moodle:${item.module}:${item.facility}`);
-          fnDebugger(`Calling ${item.preferName}...`);
-
-          //Verify if function name is set
-          if (!wsfunction || wsfunction.length === 0) {
-            throw new Error('Web Service function not defined: ' + item);
-          }
-
-          //Build User-Agent string
-          let userAgent = this.options.userAgent;
-          if (!userAgent) {
-            userAgent =
-              pkg.name +
-              '/' +
-              pkg.version +
-              ' (node.js ' +
-              process.version +
-              '; ' +
-              os.platform() +
-              ' ' +
-              os.release() +
-              ')';
-          }
-
-          //Build request options
-          let options: RequestInit | null = null;
-          // if (!payload.body) {
-          //No data to be sent
-          options = {
-            method: 'GET',
-            headers: {
-              'User-Agent': userAgent,
-              Accept: 'application/json',
-            },
-          };
-
-          let form: URLSearchParams | '' = '';
-          if (params) form = MoodleClient._prepareParams(params);
-
-          //Complete the URL
-          let token = this.options.token || '';
-          let url =
-            this.options.baseUrl +
-            '/webservice/rest/server.php?wstoken=' +
-            token +
-            '&moodlewsrestformat=json&wsfunction=' +
-            wsfunction +
-            '&' +
-            form;
-
-          //Make a HTTP request
-          let res = await fetch(url, options);
-
-          //Expected JSON as data object
-          let result = await res.json();
-
-          //Moodle always returns HTTP status code 200
-          //Error can be detected by object properties
-          if (typeof result.exception === 'string') {
-            throw new MoodleError(result);
-          }
-
-          //Success
-          fnDebugger!(
-            `Successfully called ${item.preferName} with parameters: ${
-              JSON.stringify(params) ?? 'null'
-            }.`
-          );
-          resolve(result as AnyObject);
-        } catch (err) {
-          fnDebugger!(
-            `Failed to call ${
-              item.preferName
-            } with parameters: ${JSON.stringify(params)}.`
-          );
-          reject(err as Error);
-        }
-      });
-    };
-
+  private _loadApi() {
     //Store definition into the instance
     this._definition = definition;
 
@@ -243,7 +80,7 @@ export class MoodleClient {
     this._functions = [];
 
     //Bind Moodle Web Service functions, e.g. core_user_create_users => core.user.createUsers()
-    this.api = {} as any;
+    this.api = { config: { token: this.options.token } } as any;
     const client = this;
     const api = this.api as IExtMoodleWSAPI;
     for (let item of this._definition.items) {
@@ -263,14 +100,213 @@ export class MoodleClient {
         api[item.module][item.facility][item.preferName] = function (
           payload: IMoodleWSParams
         ) {
-          return client.request(item, payload);
+          return client._request(item, payload);
         };
       }
     }
   }
+
+  private static _buildUserAgent(): string {
+    return (
+      pkg.name +
+      '/' +
+      pkg.version +
+      ' (node.js ' +
+      process.version +
+      '; ' +
+      os.platform() +
+      ' ' +
+      os.release() +
+      ')'
+    );
+  }
+
+  get userAgent() {
+    //Build User-Agent string
+    let userAgent = this.options.userAgent;
+    if (!userAgent) userAgent = MoodleClient._buildUserAgent();
+    return userAgent;
+  }
+
+  public static flatten(data: any) {
+    let result: AnyObject = {};
+
+    function dig(d: Diggable, prefix: string) {
+      if (typeof d === 'string' || typeof d === 'number') {
+        result[prefix] = d;
+        return;
+      }
+
+      for (let key in d as AnyObject) {
+        let item = (d as AnyObject)[key];
+        if (item === null) {
+          continue;
+        } else if (item instanceof Array) {
+          for (var i = 0; i < item.length; i++) {
+            dig(
+              item[i],
+              prefix.length === 0
+                ? prefix + key + '[' + i + ']' //Root level has no square brackets
+                : prefix + '[' + key + '][' + i + ']' //Deeper levels must include brackets
+            );
+          }
+        } else if (typeof item === 'object') {
+          for (let i in item as AnyObject) {
+            dig(item, prefix + key + '[' + i + ']');
+          }
+        } else {
+          result[prefix + '[' + key + ']'] = item;
+        }
+      }
+    }
+
+    dig(data, '');
+    return result;
+  }
+
+  public static async authenticate({
+    baseUrl,
+    credentials,
+    userAgent,
+  }: Omit<IMoodleClientOptions, 'token'>) {
+    let options: RequestInit;
+    // if (!payload.body) {
+    //No data to be sent
+    options = {
+      method: 'GET',
+      headers: {
+        'User-Agent': userAgent ?? MoodleClient._buildUserAgent(),
+        Accept: 'application/json',
+      },
+    };
+
+    let form: URLSearchParams | '' = new URLSearchParams({
+      ...credentials,
+      service: credentials?.service ?? 'moodle_mobile_app',
+    } as any);
+
+    let url = baseUrl + 'login/token.php?' + form;
+    const res = await fetch(url, options);
+    const result = await res.json();
+    if (typeof result.error === 'string') {
+      throw new MoodleError(result);
+    }
+    return result as IMoodleWSAuthResponse;
+  }
+
+  private static _format(data: { [k: string]: number | string | any[] }): any {
+    const moodleData: NameValuePair<string, string>[] = [];
+    for (const key of Object.keys(data)) {
+      const currentItem = data[key];
+      if (currentItem instanceof Array) {
+        for (const value of currentItem) {
+          moodleData.push({ name: key, value: `${value}` });
+        }
+      } else {
+        moodleData.push({ name: key, value: data[key] as string });
+      }
+    }
+    return { data: moodleData };
+  }
+
+  private static _prepareParams(params: IMoodleWSParams): URLSearchParams {
+    let finalParams: IMoodleWSParams;
+    finalParams = { ...params };
+    for (const key of Object.keys(params)) {
+      const item = finalParams[key];
+      if (item instanceof Array) {
+        delete finalParams[key];
+        finalParams = {
+          ...finalParams,
+          ...MoodleClient.flatten({ [key]: item }),
+        };
+      }
+    }
+    if (finalParams.data)
+      finalParams = {
+        ...finalParams,
+        ...MoodleClient.flatten(MoodleClient._format(params.data)),
+      };
+    return new URLSearchParams(finalParams as any);
+  }
+
+  private _request(
+    item: IMoodleWSFn,
+    params?: IMoodleWSParams
+  ): Promise<AnyObject | Error> {
+    return new Promise(async (resolve, reject) => {
+      let fnDebugger: debug.Debugger;
+      try {
+        //Get web service functio name
+        let wsfunction = null;
+        wsfunction = item.name;
+        fnDebugger = debug(`moodle:${item.module}:${item.facility}`);
+        fnDebugger(`Calling ${item.preferName}...`);
+
+        //Verify if function name is set
+        if (!wsfunction || wsfunction.length === 0) {
+          throw new Error('Web Service function not defined: ' + item);
+        }
+
+        //Build request options
+        let options: RequestInit | null = null;
+
+        //No data to be sent
+        options = {
+          method: 'GET',
+          headers: {
+            'User-Agent': this.userAgent,
+            Accept: 'application/json',
+          },
+        };
+
+        let form: URLSearchParams | '' = '';
+        if (params) form = MoodleClient._prepareParams(params);
+
+        //Complete the URL
+        let token = this.options.token || '';
+        let url =
+          this.options.baseUrl +
+          '/webservice/rest/server.php?wstoken=' +
+          this.api.config.token +
+          '&moodlewsrestformat=json&wsfunction=' +
+          wsfunction +
+          '&' +
+          form;
+
+        //Make a HTTP request
+        let res = await fetch(url, options);
+
+        //Expected JSON as data object
+        let result = await res.json();
+
+        //Moodle always returns HTTP status code 200
+        //Error can be detected by object properties
+        if (typeof result.exception === 'string') {
+          throw new MoodleError(result);
+        }
+
+        //Success
+        fnDebugger!(
+          `Successfully called ${item.preferName} with parameters: ${
+            JSON.stringify(params) ?? 'null'
+          }.`
+        );
+        resolve(result as AnyObject);
+      } catch (err) {
+        fnDebugger!(
+          `Failed to call ${item.preferName} with parameters: ${JSON.stringify(
+            params
+          )}.`
+        );
+        reject(err as Error);
+      }
+    });
+  }
 }
 
-const MoodleApi = (options: IMoodleClientOptions) =>
-  new MoodleClient(options).api;
+const MoodleApi = (options: Omit<IMoodleClientOptions, 'credentials'>) => {
+  return new MoodleClient(options).api;
+};
 
 export default MoodleApi;
