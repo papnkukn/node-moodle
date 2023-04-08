@@ -48,13 +48,14 @@ export class MoodleClient extends EventEmitter {
   private _functions?: string[];
   public api: IExtMoodleWSAPI;
   public static flatten: (data: any) => any;
-  private static _format: (data: {
-    [k: string]: number | string | any[];
-  }) => any;
   public request: (
     item: string | IMoodleWSFn,
     payload?: IMoodleWSParams
   ) => Promise<AnyObject | Error>;
+  private static _format: (data: {
+    [k: string]: number | string | any[];
+  }) => any;
+  private static _prepareParams: (params: IMoodleWSParams) => URLSearchParams;
   constructor(public options: IMoodleClientOptions) {
     super();
 
@@ -81,7 +82,7 @@ export class MoodleClient extends EventEmitter {
       let result: AnyObject = {};
 
       function dig(d: Diggable, prefix: string) {
-        if (typeof d === 'string') {
+        if (typeof d === 'string' || typeof d === 'number') {
           result[prefix] = d;
           return;
         }
@@ -109,7 +110,7 @@ export class MoodleClient extends EventEmitter {
         }
       }
 
-      dig(MoodleClient._format(data), '');
+      dig(data, '');
       return result;
     };
 
@@ -128,12 +129,33 @@ export class MoodleClient extends EventEmitter {
       return { data: moodleData };
     };
 
+    MoodleClient._prepareParams = function (params) {
+      let finalParams: IMoodleWSParams;
+      finalParams = { ...params };
+      for (const key of Object.keys(params)) {
+        const item = finalParams[key];
+        if (item instanceof Array) {
+          delete finalParams[key];
+          finalParams = {
+            ...finalParams,
+            ...MoodleClient.flatten({ [key]: item }),
+          };
+        }
+      }
+      if (finalParams.data)
+        finalParams = {
+          ...finalParams,
+          ...MoodleClient.flatten(MoodleClient._format(params.data)),
+        };
+      return new URLSearchParams(finalParams as any);
+    };
+
     //Create a request function
-    this.request = function (item, payload) {
+    this.request = function (item, params) {
       return new Promise(async (resolve, reject) => {
         try {
           //Emit an event
-          this.emit('request', { definition: item, request: payload });
+          this.emit('request', { definition: item, request: params });
 
           //Get web service functio name
           let wsfunction = null;
@@ -176,14 +198,8 @@ export class MoodleClient extends EventEmitter {
             },
           };
 
-          let finalPayload = payload;
-          if (payload && payload.data) {
-            finalPayload = {
-              ...finalPayload,
-              ...MoodleClient.flatten(payload.data),
-            };
-          }
-          const form = new URLSearchParams(finalPayload);
+          let form: URLSearchParams | '' = '';
+          if (params) form = MoodleClient._prepareParams(params);
 
           //Complete the URL
           let token = this.options.token || '';
@@ -205,7 +221,7 @@ export class MoodleClient extends EventEmitter {
           //Emit an event
           this.emit('response', {
             definition: item,
-            request: payload,
+            request: params,
             response: result,
           });
 
@@ -258,4 +274,7 @@ export class MoodleClient extends EventEmitter {
   }
 }
 
-export default (options: IMoodleClientOptions) => new MoodleClient(options).api;
+const MoodleApi = (options: IMoodleClientOptions) =>
+  new MoodleClient(options).api;
+
+export default MoodleApi;

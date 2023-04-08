@@ -11,5 +11,5 @@ export default interface IMoodleWSParams {
   value?: string;
   data?: any;
   forumid?: number;
-  'courseids[]'?: number;
+  courseids?: number[];
 }
