@@ -1,5 +1,5 @@
 import NumericBoolean from '../types/NumericBoolean';
-import IMoodleCourseModule from './IMoodleCourseModule';
+import IMoodleCourseSectionModule from './IMoodleCourseSectionModule';
 
 export default interface IMoodleCourseSection {
   id: number;
@@ -10,5 +10,5 @@ export default interface IMoodleCourseSection {
   section: number;
   hiddenbynumsections: number;
   uservisible: boolean;
-  modules: IMoodleCourseModule[];
+  modules: IMoodleCourseSectionModule[];
 }

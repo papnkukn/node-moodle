@@ -1,28 +1,16 @@
-import ModuleName, { ModulePlural } from '../types/ModuleName';
-import NumericBoolean from '../types/NumericBoolean';
-import IMoodleResourceContent from './IMoodleResourceContent';
-import IMoodleResourceContentInfo from './IMoodleResourceContentInfo';
+import ModuleNames from '../types/ModuleNames';
 
 export default interface IMoodleCourseModule {
   id: number;
-  url: string;
+  course: number;
+  module: number;
   name: string;
+  modname: ModuleNames;
   instance: number;
-  contextid: number;
-  visible: NumericBoolean;
-  uservisible: boolean;
-  visibleoncoursepage: NumericBoolean;
-  modicon: string; //url
-  modname: ModuleName | string;
-  modplural: ModulePlural | string;
-  indent: number;
-  onclick: string;
-  afterlink: string | null;
-  customdata: string;
-  noviewlink: boolean;
+  section: number;
+  sectionnum: number;
+  groupmode: number;
+  groupingid: number;
   completion: number;
   downloadcontent: number;
-  dates: number[];
-  contents?: IMoodleResourceContent[];
-  contentsinfo?: IMoodleResourceContentInfo;
 }
