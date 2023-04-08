@@ -1,4 +1,4 @@
-import AttemptStates from '../types/AttemptStates';
+import { AttemptStates } from '../types';
 
 export default interface IMoodleAttempt {
   id: number;
